@@ -1,0 +1,23 @@
+{
+  "name": "cv",
+  "version": "1.0.0",
+  "description": "* photo * typescript checker * pure native API, no framework * use SCSS * theme switch (light\\black) * Language switcher (ENG\\RU) * GitHub repo as the only source of truth with scheduled auto update * Mobile version * print version",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sekretk/cv.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sekretk/cv/issues"
+  },
+  "homepage": "https://github.com/sekretk/cv#readme",
+  "devDependencies": {
+    "jsonresume-theme-kendall": "^0.2.0",
+    "resume-cli": "^3.1.2"
+  }
+}
