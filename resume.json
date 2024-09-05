@@ -3,12 +3,11 @@
     "theme": "kendall"
   },
   "basics": {
-    "name": "Sekret Konstantin",
+    "name": "Konstantin Sekret",
     "label": "Typescript Developer",
     "image": "https://avatars.githubusercontent.com/u/1430555?v=4",
-    "url": "http://boythings.top/cv",
-    "summary": "TBD",
-    "website": "https://boysthings.top",
+    "summary": "I am a senior expert with more than 13 years of experience in software development across various roles and areas of responsibility. Over the past 10+ years, I have primarily focused on the fintech sector. Due to the specifics of the projects and companies I have worked with, I have had the opportunity to work on management tools, DevOps tools, and overall infrastructure.",
+    "website": "https://boysthings.top/cv",
     "email": "sekret.constantine@gmail.com",
     "profiles": [
       {
@@ -28,7 +27,7 @@
       }
     ],
     "location": {
-      "region": "Central Asia (GMT+3)"
+      "region": "Rostov-on-Don, Russia, (GMT+3)"
     }
   },
   "languages": [
@@ -233,9 +232,6 @@
   ],
   "interests": [
     {
-      "name": "Gardening"
-    },
-    {
       "name": "Construction"
     },
     {
@@ -246,6 +242,9 @@
     },
     {
       "name": "Reading"
+    },
+    {
+      "name": "Gardening"
     }
   ]
 }
