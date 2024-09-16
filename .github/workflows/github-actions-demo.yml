@@ -18,8 +18,13 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: TEST_TAG
+          message: 'TEST_TAG'
+          
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       - name: Echo current date
@@ -31,10 +36,7 @@ jobs:
       - name: Echo version
         run: echo version $VERSION
 
-      - uses: actions-ecosystem/action-push-tag@v1
-        with:
-          tag: TEST_TAG
-          message: 'TEST_TAG'
+     
 
       - name: Print a greeting
         env:
