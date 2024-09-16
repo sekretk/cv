@@ -21,13 +21,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Set current date as env variable
-        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+        run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
       - name: Echo current date
         run: echo $NOW # Gives "2022-12-11T01:42:20"
       - name: Read version
-        run: version=$(<.version)
+        run: |
+          VER=$(cat .version)
+          echo "VERSION=$VER" >> $GITHUB_ENV
       - name: Echo version
-        run: echo version $version
+        run: echo version $VERSION
       - name: Print a greeting
         env:
           MY_VAR: Hi there! My name is
