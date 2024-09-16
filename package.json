@@ -4,7 +4,9 @@
   "description": "* photo * typescript checker * pure native API, no framework * use SCSS * theme switch (light\\black) * Language switcher (ENG\\RU) * GitHub repo as the only source of truth with scheduled auto update * Mobile version * print version",
   "main": "index.js",
   "scripts": {
-    "serve": "resume serve --port 4000 --theme kendall"
+    "serve": "resume serve --port 4000 --theme kendall",
+    "postinstall": "paraglide-js compile --project ./project.inlang --outdir ./paraglide",
+    "build": "paraglide-js compile --project ./project.inlang --outdir ./paraglide"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,9 @@
   },
   "homepage": "https://github.com/sekretk/cv#readme",
   "devDependencies": {
+    "@inlang/paraglide-js": "1.11.2",
     "jsonresume-theme-kendall": "^0.2.0",
+    "jsonresume-theme-stackoverflow-react": "^2.1.0",
     "resume-cli": "^3.1.2"
   }
 }

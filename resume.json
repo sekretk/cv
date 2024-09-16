@@ -43,8 +43,8 @@
   ],
   "education": [
     {
-      "endDate": "2007",
-      "startDate": "2012",
+      "startDate": "2007",
+      "endDate": "2012",
       "area": "Mathematician",
       "studyType": "Master",
       "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
@@ -141,7 +141,7 @@
       ],
       "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows. ",
       "website": "https://devexperts.com/",
-      "position": "Founder",
+      "position": "Frontend Teamlead",
       "startDate": "2021-10"
     },
     {
