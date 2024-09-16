@@ -30,10 +30,12 @@ jobs:
           echo "VERSION=$VER" >> $GITHUB_ENV
       - name: Echo version
         run: echo version $VERSION
-      - name: Tag
-        run: |
-          git tag TEST_TAG
-          git push origin TEST_TAG
+
+      - uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: TEST_TAG
+          message: 'TEST_TAG'
+
       - name: Print a greeting
         env:
           MY_VAR: Hi there! My name is
