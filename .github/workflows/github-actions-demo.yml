@@ -1,5 +1,5 @@
 name: ReleaseTest
-run-name: Releasing resume
+run-name: Test releases
 on:
   push:
     branches: ['release-test']
