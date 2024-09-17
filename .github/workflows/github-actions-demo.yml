@@ -36,7 +36,7 @@ jobs:
       - name: merge to release
         run: |
           git checkout release
-          git merge develop
+          git merge release-test
           git push
 
       # - name: tag
