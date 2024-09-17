@@ -30,6 +30,7 @@ jobs:
       - name: Get new version
         run: |
           VER=$(cat .version)
+          echo #VER
           NEXTVER=$(($VER + 1))
           echo "NEXTVER=$NEXTVER" >> $GITHUB_ENV
 
@@ -41,6 +42,7 @@ jobs:
 
       - name: commit and tag new release
         run: |
+          echo $NEXTVER
           echo $NEXTVER > .version
           git add .version
           git commit -m"release $NEXTVER"
