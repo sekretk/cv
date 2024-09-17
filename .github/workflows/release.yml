@@ -43,7 +43,7 @@ jobs:
         run: |
           echo $NEXTVER > .version
           git add .version
-          git commit -m"release $(NEXTVER)"
+          git commit -m"release $NEXTVER"
           git tag $NEXTVER
           git push
           git push origin $NEXTVER
