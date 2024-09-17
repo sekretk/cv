@@ -25,7 +25,9 @@ jobs:
       - name: init git
         run: |
           git init
-          git status 
+          git status
+          git config --global user.email "no-reply@github.com"
+          git config --global user.name "Release Bot"
 
       - name: Get new version
         run: |
