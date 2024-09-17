@@ -2,7 +2,7 @@ name: Release
 run-name: Releases
 on:
   push:
-    branches: ['release-test']
+    branches: ['release']
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -33,11 +33,11 @@ jobs:
           NEXTVER=$(($VER + 1))
           echo "NEXTVER=$NEXTVER" >> $GITHUB_ENV
 
-      - name: merge to release
-        run: |
-          git checkout release
-          git merge develop
-          git push
+      # - name: merge to release
+      #   run: |
+      #     git checkout release
+      #     git merge develop
+      #     git push
 
       - name: commit and tag new release
         run: |
