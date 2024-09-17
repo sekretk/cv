@@ -8,7 +8,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  test-job:
+  build_docker:
     runs-on: ubuntu-latest
 
     permissions:
