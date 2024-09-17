@@ -1,5 +1,5 @@
-name: ReleaseTest
-run-name: Test releases
+name: Demo
+run-name: Actions experiments
 on:
   push:
     branches: ['release-test']
