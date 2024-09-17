@@ -22,38 +22,43 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: init
-        run: git init
-
-      - name: status
-        run: git status 
-
-      - name: tag
+      - name: init git
         run: |
-          git tag TEST_TAG
-          git push origin TEST_TAG
+          git init
+          git status 
 
-      # - uses: actions-ecosystem/action-push-tag@v1
-      #   with:
-      #     tag: TEST_TAG
-      #     message: 'TEST_TAG'
-          
-      - name: Set current date as env variable
-        run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-      - name: Echo current date
-        run: echo $NOW # Gives "2022-12-11T01:42:20"
-      - name: Read version
+      - name: Get new version
         run: |
           VER=$(cat .version)
-          echo "VERSION=$VER" >> $GITHUB_ENV
-      - name: Echo version
-        run: echo version $VERSION
+          NEXTVER=$(($VER + 1))
+          echo "VERSION=$NEXTVER" >> $GITHUB_ENV
 
-      - name: Print a greeting
-        env:
-          MY_VAR: Hi there! My name is
-          FIRST_NAME: Mona
-          MIDDLE_NAME: The
-          LAST_NAME: Octocat
+      - name: merge to release
         run: |
-          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+          git checkout release
+          git merge develop
+          git push
+
+      # - name: tag
+      #   run: |
+      #     git tag TEST_TAG
+      #     git push origin TEST_TAG
+          
+      # - name: Set current date as env variable
+      #   run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      # - name: Echo current date
+      #   run: echo $NOW # Gives "2022-12-11T01:42:20"
+
+     
+
+      # - name: Echo version
+      #   run: echo version $VERSION
+
+      # - name: Print a greeting
+      #   env:
+      #     MY_VAR: Hi there! My name is
+      #     FIRST_NAME: Mona
+      #     MIDDLE_NAME: The
+      #     LAST_NAME: Octocat
+      #   run: |
+      #     echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
