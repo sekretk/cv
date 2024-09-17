@@ -1,8 +1,6 @@
-name: Demo
-run-name: Actions experiments
-on:
-  push:
-    branches: ['release-test']
+name: Release
+run-name: Make version and tag commit
+on: workflow_dispatch
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -26,6 +24,8 @@ jobs:
         run: |
           git init
           git status 
+          git config --global user.email "no-reply@github.com"
+          git config --global user.name "Release Bot"
 
       - name: Get new version
         run: |
@@ -36,7 +36,7 @@ jobs:
       - name: merge to release
         run: |
           git checkout release
-          git merge develop
+          git merge main
           git push
 
       - name: commit and tag new release
@@ -47,22 +47,3 @@ jobs:
           git tag $NEXTVER
           git push
           git push origin $NEXTVER
-          
-      # - name: Set current date as env variable
-      #   run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-      # - name: Echo current date
-      #   run: echo $NOW # Gives "2022-12-11T01:42:20"
-
-     
-
-      # - name: Echo version
-      #   run: echo version $VERSION
-
-      # - name: Print a greeting
-      #   env:
-      #     MY_VAR: Hi there! My name is
-      #     FIRST_NAME: Mona
-      #     MIDDLE_NAME: The
-      #     LAST_NAME: Octocat
-      #   run: |
-      #     echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
