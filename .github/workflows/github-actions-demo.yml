@@ -19,6 +19,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: init
+        run: git init
+
+      - name: status
+        run: git status 
 
       - uses: actions-ecosystem/action-push-tag@v1
         with:
@@ -35,8 +43,6 @@ jobs:
           echo "VERSION=$VER" >> $GITHUB_ENV
       - name: Echo version
         run: echo version $VERSION
-
-     
 
       - name: Print a greeting
         env:
