@@ -31,18 +31,22 @@ jobs:
         run: |
           VER=$(cat .version)
           NEXTVER=$(($VER + 1))
-          echo "VERSION=$NEXTVER" >> $GITHUB_ENV
+          echo "NEXTVER=$NEXTVER" >> $GITHUB_ENV
 
       - name: merge to release
         run: |
           git checkout release
-          git merge release-test
+          git merge develop
           git push
 
-      # - name: tag
-      #   run: |
-      #     git tag TEST_TAG
-      #     git push origin TEST_TAG
+      - name: commit and tag new release
+        run: |
+          echo $NEXTVER >> .version
+          git add .version
+          git commit -m"release $(NEXTVER)"
+          git tag $NEXTVER
+          git push
+          git push origin $NEXTVER
           
       # - name: Set current date as env variable
       #   run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
