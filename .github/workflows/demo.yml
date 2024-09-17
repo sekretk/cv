@@ -41,7 +41,7 @@ jobs:
 
       - name: commit and tag new release
         run: |
-          echo $NEXTVER >> .version
+          echo $NEXTVER > .version
           git add .version
           git commit -m"release $(NEXTVER)"
           git tag $NEXTVER
