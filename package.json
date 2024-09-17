@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/sekretk/cv#readme",
   "devDependencies": {
-    "@inlang/paraglide-js": "1.11.2",
     "jsonresume-theme-kendall": "^0.2.0",
     "jsonresume-theme-stackoverflow-react": "^2.1.0",
     "resume-cli": "^3.1.2"
