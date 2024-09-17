@@ -1,5 +1,5 @@
-name: Release
-run-name: Releases
+name: Build_Image
+run-name: Build and publish docker images
 on:
   push:
     branches: ['release']
