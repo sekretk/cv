@@ -27,15 +27,12 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "Release Bot"
 
-      - name: Get new version
+      - name:  get version and merge changes
         run: |
+          git checkout release
           VER=$(cat .version)
           NEXTVER=$(($VER + 1))
           echo "NEXTVER=$NEXTVER" >> $GITHUB_ENV
-
-      - name: merge to release
-        run: |
-          git checkout release
           git merge main
           git push
 
