@@ -44,6 +44,6 @@ jobs:
           git add .version
           cat .version
           git commit -m"release $NEXTVER"
-          git tag $NEXTVER
+          git tag v.$NEXTVER
           git push
           git push origin $NEXTVER
