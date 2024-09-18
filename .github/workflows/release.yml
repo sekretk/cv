@@ -46,4 +46,4 @@ jobs:
           git commit -m"release $NEXTVER"
           git tag v.$NEXTVER
           git push
-          git push origin $NEXTVER
+          git push origin v.$NEXTVER
