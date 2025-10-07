@@ -1,7 +1,4 @@
 #!/bin/sh
-# Create public directories for each resume server
-mkdir -p public-eng public-rus
-
 # Start PDF file server on port 6001
 echo "Starting PDF file server on port 6001..."
 cd /home/node/app && http-server ./pdf -p 6001 &
