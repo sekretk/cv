@@ -79,15 +79,15 @@ jobs:
           echo "### 🏃‍♂️ Quick Start" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
           echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "docker run -p 4000:4000 -p 4001:4001 -p 4002:4002 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "docker run -p 6001:6001 -p 6002:6002 -p 6003:6003 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🌍 Multi-Language Support" >> $GITHUB_STEP_SUMMARY
-          echo "- **English CV**: http://localhost:4000" >> $GITHUB_STEP_SUMMARY
-          echo "- **Russian CV**: http://localhost:4001" >> $GITHUB_STEP_SUMMARY
-          echo "- **PDF Server**: http://localhost:4002" >> $GITHUB_STEP_SUMMARY
-          echo "  - English PDF: http://localhost:4002/resume.eng.pdf" >> $GITHUB_STEP_SUMMARY
-          echo "  - Russian PDF: http://localhost:4002/resume.rus.pdf" >> $GITHUB_STEP_SUMMARY
+          echo "- **PDF Server**: http://localhost:6001" >> $GITHUB_STEP_SUMMARY
+          echo "  - English PDF: http://localhost:6001/resume.eng.pdf" >> $GITHUB_STEP_SUMMARY
+          echo "  - Russian PDF: http://localhost:6001/resume.rus.pdf" >> $GITHUB_STEP_SUMMARY
+          echo "- **English CV**: http://localhost:6002" >> $GITHUB_STEP_SUMMARY
+          echo "- **Russian CV**: http://localhost:6003" >> $GITHUB_STEP_SUMMARY
 
   create-release:
     needs: build-and-push
@@ -115,18 +115,18 @@ jobs:
             ### 🏃‍♂️ Quick Start
             ```bash
             docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            docker run -p 4000:4000 -p 4001:4001 -p 4002:4002 ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            docker run -p 6000:6000 -p 6001:6001 -p 6002:6002 ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ```
             
             ### 🌍 Multi-Language Support
-            - **English CV**: http://localhost:4000
-            - **Russian CV**: http://localhost:4001
-            - **PDF Server**: http://localhost:4002
-              - English PDF: http://localhost:4002/resume.eng.pdf
-              - Russian PDF: http://localhost:4002/resume.rus.pdf
+            - **PDF Server**: http://localhost:6000
+              - English PDF: http://localhost:6000/resume.eng.pdf
+              - Russian PDF: http://localhost:6000/resume.rus.pdf
+            - **English CV**: http://localhost:6001
+            - **Russian CV**: http://localhost:6002
             
             ### 📄 PDF Files
-            Pre-generated PDFs are served via HTTP server on port 4002 with directory listing enabled
+            Pre-generated PDFs are served via HTTP server on port 6000 with directory listing enabled
             
             ### 🔧 What's Changed
             - Automated Docker build and push to GitHub Container Registry

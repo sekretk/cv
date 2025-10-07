@@ -4,16 +4,19 @@
   "description": "* photo * typescript checker * pure native API, no framework * use SCSS * theme switch (light\\black) * Language switcher (ENG\\RU) * GitHub repo as the only source of truth with scheduled auto update * Mobile version * print version",
   "main": "index.js",
   "scripts": {
-    "serve:eng": "resume serve --resume ./resume/eng.json --port 4000 --theme kendall",
-    "serve:rus": "resume serve --resume ./resume/rus.json --port 4001 --theme kendall",
-    "serve:pdf": "npx http-server ./pdf -p 4002 --cors",
+    "serve:eng": "resume serve --resume ./resume/eng.json --port 6002 --theme kendall",
+    "serve:rus": "resume serve --resume ./resume/rus.json --port 6003 --theme kendall",
+    "serve:pdf": "npx http-server ./pdf -p 6001 --cors",
     "build:pdf:eng": "mkdir -p pdf && resume export --resume ./resume/eng.json --theme kendall --format pdf pdf/resume.eng.pdf",
     "build:pdf:rus": "mkdir -p pdf && resume export --resume ./resume/rus.json --theme kendall --format pdf pdf/resume.rus.pdf",
     "build:pdf": "npm run build:pdf:eng && npm run build:pdf:rus",
     "serve:eng:watch": "nodemon --exec serve:eng",
     "serve:rus:watch": "nodemon --exec serve:rus",
     "docker:build": "docker build -t cv .",
-    "docker:run": "docker run -p 4000:4000 -p 4001:4001 -p 4002:4002 cv"
+    "docker:run": "docker stop cv-app 2>/dev/null && docker rm cv-app 2>/dev/null; docker run --name cv-app -p 6001:6001 -p 6002:6002 -p 6003:6003 cv",
+    "clean:output": "rm -rf pdf && rm -rf public",
+    "clean:lib": "rm -rf node_modules",
+    "clean:all": "npm run clean:output && npm run clean:lib"
   },
   "repository": {
     "type": "git",
