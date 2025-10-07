@@ -45,28 +45,26 @@
   ],
   "education": [
     {
-      "startDate": "2007",
-      "endDate": "2012",
-      "area": "Mathematician",
-      "studyType": "Master",
-      "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
-      "courses": ["Economic models", "Software developement"]
-    },
-    {
-      "startDate": "2019",
-      "endDate": "2019",
-      "studyType": "Online",
-      "institution": "Pirple",
-      "area": "NodeJS foundation",
-      "url": "https://www.pirple.com/"
-    },
-    {
-      "startDate": "2019",
-      "endDate": "2019",
+      "startDate": "2025",
       "studyType": "Online",
       "institution": "Udemy",
-      "area": "VueJS foundation",
-      "url": "https://www.udemy.com/"
+      "area": "GoLang for microservices",
+      "url": "https://https://www.udemy.com//"
+    },
+    {
+      "startDate": "2025",
+      "studyType": "Online",
+      "institution": "PurpleSchool",
+      "area": "Advanced GoLang",
+      "url": "https://app.purpleschool.ru/"
+    },
+    {
+      "startDate": "2024",
+      "endDate": "2025",
+      "studyType": "Online",
+      "institution": "Yandex Practicum",
+      "area": "DevOps For Developers Extended",
+      "url": "https://practicum.yandex.ru/"
     },
     {
       "startDate": "2021",
@@ -91,15 +89,30 @@
       "area": "Docker basic",
       "url": "https://www.linkedin.com/"
     },
-   
     {
-      "startDate": "2024",
+      "startDate": "2019",
+      "endDate": "2019",
       "studyType": "Online",
-      "institution": "Yandex Practicum",
-      "area": "DevOps course",
-      "url": "https://practicum.yandex.ru/"
+      "institution": "Pirple",
+      "area": "NodeJS foundation",
+      "url": "https://www.pirple.com/"
+    },
+    {
+      "startDate": "2019",
+      "endDate": "2019",
+      "studyType": "Online",
+      "institution": "Udemy",
+      "area": "VueJS foundation",
+      "url": "https://www.udemy.com/"
+    },
+    {
+      "startDate": "2007",
+      "endDate": "2012",
+      "area": "Mathematician",
+      "studyType": "Master",
+      "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
+      "courses": ["Economic models", "Software developement"]
     }
-
   ],
   "skills": [
     {
@@ -119,7 +132,9 @@
         "NodeJS",
         "NestJS",
         "Java",
-        "C#"
+        "C#",
+        "PostgreSQL",
+        "MongoDB"
       ],
       "level": "Middle",
       "name": "Backend"
@@ -127,12 +142,24 @@
     {
       "keywords": [
         "Shell", 
-        "Prometheus / Grafana", 
         "K6",
-        "Docker Swarm"
+        "Docker Swarm",
+        "kubernetes"
       ],
-      "level": "Junior",
+      "level": "Middle",
       "name": "DevOps"
+    },
+    {
+      "keywords": [
+        "Zoom", 
+        "Slack", 
+        "BitBucket",
+        "Azure",
+        "Prometheus",
+        "Grafana",
+        "K6"
+      ],
+      "name": "Integrations"
     }
   ],
   "work": [
@@ -141,7 +168,7 @@
       "highlights": [
         "React", "Styled Components", "fp-ts", "io-ts", "NextJS", "Docker", "NestJS", "Promethius/Graphana", "K6 performance metrics"
       ],
-      "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows. ",
+      "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows.",
       "website": "https://devexperts.com/",
       "position": "Frontend Teamlead",
       "startDate": "2021-10"
