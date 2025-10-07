@@ -2,9 +2,9 @@
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.hosts }}
   {{- range .paths }}
-  {{- if eq .path "/" }}
+  {{- if eq .path "/eng" }}
   English CV: http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
-  {{- else if eq .path "/ru" }}
+  {{- else if eq .path "/rus" }}
   Russian CV: http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
   {{- else if eq .path "/pdf" }}
   PDF Files:  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
@@ -30,9 +30,9 @@
 2. Your CV application is now running with both languages!
 
 3. Services:
-   - English CV: Available at the root path (/)
-   - Russian CV: Available at /ru path
-   - PDF Files: Available at /pdf path with directory listing
+   - English CV: Available at /eng path (port 6002)
+   - Russian CV: Available at /rus path (port 6003)
+   - PDF Files: Available at /pdf path (port 6001) with directory listing
    - All services run simultaneously on different ports
 
 4. PDF Files:
@@ -44,8 +44,8 @@
 
 5. Domain Configuration:
    - Domain: {{ .Values.ingress.hosts[0].host }}
-   - English CV: https://{{ .Values.ingress.hosts[0].host }}/
-   - Russian CV: https://{{ .Values.ingress.hosts[0].host }}/ru
+   - English CV: https://{{ .Values.ingress.hosts[0].host }}/eng
+   - Russian CV: https://{{ .Values.ingress.hosts[0].host }}/rus
    - PDF Server: https://{{ .Values.ingress.hosts[0].host }}/pdf
    - TLS: Enabled with Let's Encrypt
    - Certificate Resolver: {{ .Values.ingress.annotations."traefik.ingress.kubernetes.io/router.tls.certresolver" }}

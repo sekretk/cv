@@ -59,9 +59,9 @@ ingress:
   hosts:
     - host: cv.boysthings.top
       paths:
-        - path: /
+        - path: /eng
           pathType: Prefix
-        - path: /ru
+        - path: /rus
           pathType: Prefix
         - path: /pdf
           pathType: Prefix

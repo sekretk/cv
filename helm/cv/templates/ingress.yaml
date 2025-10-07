@@ -45,7 +45,17 @@ spec:
             pathType: {{ .pathType }}
             {{- end }}
             backend:
-              {{- if eq .path "/ru" }}
+              {{- if eq .path "/eng" }}
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+              {{- end }}
+              {{- else if eq .path "/rus" }}
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}-rus
@@ -64,16 +74,6 @@ spec:
               {{- else }}
               serviceName: {{ $fullName }}-pdf
               servicePort: {{ $.Values.service.pdf.port }}
-              {{- end }}
-              {{- else }}
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $fullName }}
-                port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
               {{- end }}
               {{- end }}
           {{- end }}
