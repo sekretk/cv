@@ -1,5 +1,7 @@
 node_modules
 /public
+/public-eng
+/public-rus
 resume.**.pdf
 resume.**.html
 pdf/
