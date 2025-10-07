@@ -52,7 +52,7 @@ service:
 ingress:
   enabled: true
   className: "traefik"
-  useIngressRoute: true  # Use Traefik IngressRoute instead of standard Ingress
+  useIngressRoute: false  # Use standard Ingress
   annotations:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt-boysthings"
@@ -60,15 +60,8 @@ ingress:
   hosts:
     - host: cv.boysthings.top
       paths:
-        - path: /eng
+        - path: /
           pathType: Prefix
-          stripPrefix: true
-        - path: /rus
-          pathType: Prefix
-          stripPrefix: true
-        - path: /pdf
-          pathType: Prefix
-          stripPrefix: false
   tls: []
   #  - secretName: cv-tls
   #    hosts:

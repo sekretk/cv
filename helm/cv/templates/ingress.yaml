@@ -16,9 +16,10 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "cv.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
-    traefik.ingress.kubernetes.io/rule: "PathPrefix(`/eng`) || PathPrefix(`/rus`) || PathPrefix(`/pdf`)"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
@@ -44,7 +45,6 @@ spec:
             pathType: {{ .pathType }}
             {{- end }}
             backend:
-              {{- if eq .path "/eng" }}
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
@@ -53,27 +53,6 @@ spec:
               {{- else }}
               serviceName: {{ $fullName }}
               servicePort: {{ $svcPort }}
-              {{- end }}
-              {{- else if eq .path "/rus" }}
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $fullName }}-rus
-                port:
-                  number: {{ $.Values.service.rus.port }}
-              {{- else }}
-              serviceName: {{ $fullName }}-rus
-              servicePort: {{ $.Values.service.rus.port }}
-              {{- end }}
-              {{- else if eq .path "/pdf" }}
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $fullName }}-pdf
-                port:
-                  number: {{ $.Values.service.pdf.port }}
-              {{- else }}
-              serviceName: {{ $fullName }}-pdf
-              servicePort: {{ $.Values.service.pdf.port }}
-              {{- end }}
               {{- end }}
           {{- end }}
     {{- end }}
