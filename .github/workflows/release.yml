@@ -129,12 +129,16 @@ jobs:
           echo "✅ kubectl installed successfully!"
           kubectl version --client
           
-      - name: Install Helm
+      - name: Install Helm and jq
         run: |
           echo "⚙️ Installing Helm..."
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
           echo "✅ Helm installed successfully!"
           helm version
+          
+          echo "⚙️ Installing jq for JSON parsing..."
+          sudo apt-get update && sudo apt-get install -y jq
+          echo "✅ jq installed successfully!"
           
       - name: Setup Kubernetes cluster access
         env:
@@ -195,6 +199,41 @@ jobs:
             helm list -n "$NAMESPACE" || true
           else
             echo "⚠️ Namespace '$NAMESPACE' does not exist - will be created by Helm"
+          fi
+          
+      - name: Clean up pending Helm operations
+        if: env.KUBE_ACCESS == 'true'
+        run: |
+          echo "🧹 Checking for pending Helm operations..."
+          echo "=========================================="
+          
+          NAMESPACE="cv"
+          
+          # Check if release exists and is in a pending state
+          if helm list -n "$NAMESPACE" -q | grep -q "^cv$"; then
+            echo "📋 Found existing Helm release 'cv'"
+            
+            # Get release status
+            RELEASE_STATUS=$(helm status cv -n "$NAMESPACE" -o json 2>/dev/null | jq -r '.info.status' || echo "unknown")
+            echo "Current status: $RELEASE_STATUS"
+            
+            if [ "$RELEASE_STATUS" = "pending-install" ] || [ "$RELEASE_STATUS" = "pending-upgrade" ] || [ "$RELEASE_STATUS" = "pending-rollback" ]; then
+              echo "⚠️ Found pending operation, cleaning up..."
+              
+              # Try to rollback first
+              if helm rollback cv -n "$NAMESPACE" 2>/dev/null; then
+                echo "✅ Rolled back to previous version"
+              else
+                echo "⚠️ Rollback failed, attempting to uninstall..."
+                # If rollback fails, uninstall and let the upgrade install fresh
+                helm uninstall cv -n "$NAMESPACE" --wait || true
+                echo "✅ Removed stuck release"
+              fi
+            else
+              echo "✅ No pending operations found"
+            fi
+          else
+            echo "✅ No existing release found"
           fi
           
       - name: Deploy to Kubernetes with Helm
