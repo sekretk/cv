@@ -133,5 +133,6 @@ Thumbs.db
 blah.pdf
 resume.pdf
 resume.html
-scripts/
+# Note: scripts/ needed for version updates in Docker
+# scripts/
 project.inlang/

@@ -50,7 +50,13 @@ jobs:
           echo "Updated resume files with version ${{ steps.get_version.outputs.VERSION }} and date ${{ steps.get_date.outputs.DATE }}"
       
       - name: Build PDFs
-        run: npm run build:pdf
+        run: |
+          npm run build:pdf
+          echo "PDFs built successfully!"
+          ls -lh pdf/
+          echo "Verifying PDF files exist:"
+          test -f pdf/resume.eng.pdf && echo "✓ English PDF exists" || echo "✗ English PDF missing"
+          test -f pdf/resume.rus.pdf && echo "✓ Russian PDF exists" || echo "✗ Russian PDF missing"
       
       - name: Commit updated resume files
         run: |
@@ -97,6 +103,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Verify PDFs before Docker build
+        run: |
+          echo "Checking PDF files before Docker build..."
+          ls -lh pdf/
+          echo "PDF files verified!"
+      
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -107,6 +119,8 @@ jobs:
             ghcr.io/${{ github.repository }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          # Don't use cache for COPY instructions to ensure fresh PDFs
+          no-cache: false
       
   deploy:
     name: Deploy to Kubernetes
