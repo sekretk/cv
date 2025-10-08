@@ -33,6 +33,9 @@ git push origin 1.0.0
    - All PDF files (resume.eng.pdf, resume.rus.pdf, etc.)
    - All JSON files (eng.json, rus.json, etc.)
    - Release notes with version info
+6. **Builds and pushes Docker image** to GitHub Container Registry
+   - Tagged with version (e.g., `ghcr.io/sekretk/cv:1.0.0`)
+   - Also tagged as `latest`
 
 **Job 2: Deploy** (runs after successful release)
 1. **Sets up Kubernetes access** (if KUBE_CONFIG secret is configured)
@@ -106,8 +109,11 @@ cat ~/.kube/config | base64
 
 ### Permissions Required
 
-- `contents: write` - To push commits and create releases (release job)
-- `contents: read` - For Kubernetes deployment (deploy job)
+- **Release job:**
+  - `contents: write` - To push commits and create releases
+  - `packages: write` - To push Docker images to GitHub Container Registry
+- **Deploy job:**
+  - `contents: read` - For Kubernetes deployment
 - Workflow uses `GITHUB_TOKEN` (automatically provided)
 
 ### Troubleshooting
@@ -136,6 +142,13 @@ cat ~/.kube/config | base64
 - Verify image tag exists
 - Review deployment logs in Actions tab
 
+**Pods not starting (ImagePullBackOff)**:
+- Docker image may be private on first release
+- Go to: https://github.com/sekretk?tab=packages
+- Click on `cv` package → Package settings
+- Scroll to "Danger Zone" → Change visibility to Public
+- Or add `imagePullSecrets` to Helm values.yaml
+
 ## Best Practices
 
 1. **Test locally first**: Use `npm run serve:eng:watch` to preview changes
@@ -157,9 +170,14 @@ The deploy job automatically deploys to your Kubernetes cluster when `KUBE_CONFI
 - **Timeout:** 5 minutes
 
 **What gets deployed:**
-- CV application serving English, Russian, and PDF versions
+- CV application Docker image from GitHub Container Registry
 - Services for each version (English: port 6002, Russian: port 6003, PDF: port 6001)
 - Ingress with TLS (if configured in values.yaml)
+
+**Docker image:**
+- Built from [Dockerfile](mdc:Dockerfile)
+- Pushed to `ghcr.io/sekretk/cv:{version}`
+- Automatically used by Helm deployment
 
 **Monitoring:**
 - Pre-deployment inspection of existing resources

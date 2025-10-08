@@ -23,6 +23,7 @@ description: Release pipeline and version management guidelines
    - Builds PDF files for all languages
    - Commits updated resume files back to main branch
    - Creates a GitHub Release with PDFs and JSON files attached
+   - Builds and pushes Docker image to GitHub Container Registry
    - Deploys to Kubernetes cluster (if KUBE_CONFIG secret is configured)
 
 ### Workflow File
