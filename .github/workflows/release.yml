@@ -119,249 +119,33 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Install kubectl
-        run: |
-          echo "⚙️ Installing kubectl..."
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          chmod +x kubectl
-          sudo mv kubectl /usr/local/bin/
-          echo "✅ kubectl installed successfully!"
-          kubectl version --client
           
-      - name: Install Helm and jq
-        run: |
-          echo "⚙️ Installing Helm..."
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-          echo "✅ Helm installed successfully!"
-          helm version
-          
-          echo "⚙️ Installing jq for JSON parsing..."
-          sudo apt-get update && sudo apt-get install -y jq
-          echo "✅ jq installed successfully!"
+      - name: Install Helm
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
           
       - name: Setup Kubernetes cluster access
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
           if [ -n "$KUBE_CONFIG" ]; then
-            echo "🔧 Setting up Kubernetes cluster access..."
             mkdir -p ~/.kube
             echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
             chmod 600 ~/.kube/config
-            
-            # Test cluster connectivity
-            if kubectl cluster-info > /dev/null 2>&1; then
-              echo "✅ Successfully connected to Kubernetes cluster"
-              echo "KUBE_ACCESS=true" >> $GITHUB_ENV
-            else
-              echo "❌ Failed to connect to Kubernetes cluster"
-              echo "KUBE_ACCESS=false" >> $GITHUB_ENV
-            fi
+            echo "KUBE_ACCESS=true" >> $GITHUB_ENV
           else
-            echo "⚠️ KUBE_CONFIG secret not configured - skipping cluster setup"
             echo "KUBE_ACCESS=false" >> $GITHUB_ENV
-          fi
-          
-      - name: Pre-deployment cluster inspection
-        if: env.KUBE_ACCESS == 'true'
-        run: |
-          echo "🔍 Pre-deployment cluster inspection..."
-          echo "======================================"
-          
-          NAMESPACE="cv"
-          
-          echo "📊 Cluster nodes:"
-          kubectl get nodes -o wide || true
-          
-          echo ""
-          echo "📁 Available namespaces:"
-          kubectl get namespaces || true
-          
-          if kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
-            echo ""
-            echo "✅ Namespace '$NAMESPACE' exists"
-            
-            echo ""
-            echo "📋 Current pods in '$NAMESPACE':"
-            kubectl get pods -n "$NAMESPACE" -o wide || true
-            
-            echo ""
-            echo "📋 Current services in '$NAMESPACE':"
-            kubectl get services -n "$NAMESPACE" || true
-            
-            echo ""
-            echo "📋 Current deployments in '$NAMESPACE':"
-            kubectl get deployments -n "$NAMESPACE" -o wide || true
-            
-            echo ""
-            echo "📋 Current Helm releases in '$NAMESPACE':"
-            helm list -n "$NAMESPACE" || true
-          else
-            echo "⚠️ Namespace '$NAMESPACE' does not exist - will be created by Helm"
-          fi
-          
-      - name: Clean up pending Helm operations
-        if: env.KUBE_ACCESS == 'true'
-        run: |
-          echo "🧹 Checking for pending Helm operations..."
-          echo "=========================================="
-          
-          NAMESPACE="cv"
-          
-          # Check if release exists and is in a pending state
-          if helm list -n "$NAMESPACE" -q | grep -q "^cv$"; then
-            echo "📋 Found existing Helm release 'cv'"
-            
-            # Get release status
-            RELEASE_STATUS=$(helm status cv -n "$NAMESPACE" -o json 2>/dev/null | jq -r '.info.status' || echo "unknown")
-            echo "Current status: $RELEASE_STATUS"
-            
-            if [ "$RELEASE_STATUS" = "pending-install" ] || [ "$RELEASE_STATUS" = "pending-upgrade" ] || [ "$RELEASE_STATUS" = "pending-rollback" ]; then
-              echo "⚠️ Found pending operation, cleaning up..."
-              
-              # Try to rollback first
-              if helm rollback cv -n "$NAMESPACE" 2>/dev/null; then
-                echo "✅ Rolled back to previous version"
-              else
-                echo "⚠️ Rollback failed, attempting to uninstall..."
-                # If rollback fails, uninstall and let the upgrade install fresh
-                helm uninstall cv -n "$NAMESPACE" --wait || true
-                echo "✅ Removed stuck release"
-              fi
-            else
-              echo "✅ No pending operations found"
-            fi
-          else
-            echo "✅ No existing release found"
           fi
           
       - name: Deploy to Kubernetes with Helm
         if: env.KUBE_ACCESS == 'true'
         run: |
-          echo "🚀 Deploying CV to Kubernetes..."
-          echo "================================"
-          
-          NAMESPACE="cv"
-          VERSION="${{ needs.release.outputs.version }}"
-          
-          echo "📋 Deployment Configuration:"
-          echo "Namespace: $NAMESPACE"
-          echo "Version: $VERSION"
-          echo "Chart Path: ./helm/cv"
-          echo ""
-          
-          # Validate chart
-          echo "Step 1: Validating Helm chart..."
-          helm lint ./helm/cv || {
-            echo "❌ Helm chart validation failed"
-            exit 1
-          }
-          echo "✅ Helm chart validation passed"
-          echo ""
-          
-          # Template generation (to verify configuration)
-          echo "Step 2: Generating Helm templates..."
-          helm template cv ./helm/cv \
-            --namespace "$NAMESPACE" \
-            --set image.tag="$VERSION" \
-            --debug > /tmp/cv-manifest.yaml
-          echo "✅ Helm templates generated successfully"
-          
-          echo "Generated manifest preview (first 50 lines):"
-          head -50 /tmp/cv-manifest.yaml
-          echo "... (truncated)"
-          echo ""
-          
-          # Actual deployment
-          echo "Step 3: Executing Helm deployment..."
           helm upgrade --install cv ./helm/cv \
-            --namespace "$NAMESPACE" \
+            --namespace cv \
             --create-namespace \
-            --set image.tag="$VERSION" \
+            --set image.tag="${{ needs.release.outputs.version }}" \
             --wait \
             --timeout 3m \
             --debug
-            
-          if [ $? -eq 0 ]; then
-            echo "✅ Helm deployment completed successfully"
-          else
-            echo "❌ Helm deployment failed"
-            exit 1
-          fi
-          
-      - name: Monitor deployment progress
-        if: env.KUBE_ACCESS == 'true'
-        run: |
-          echo "⏳ Monitoring deployment progress..."
-          echo "==================================="
-          
-          NAMESPACE="cv"
-          
-          # Wait a moment for resources to be created
-          sleep 10
-          
-          echo "📊 Deployment status:"
-          kubectl get deployments -n "$NAMESPACE" -o wide || true
-          
-          echo ""
-          echo "📋 Pod status:"
-          kubectl get pods -n "$NAMESPACE" -o wide || true
-          
-          echo ""
-          echo "🔍 Pod details (to diagnose issues):"
-          POD_NAME=$(kubectl get pods -n "$NAMESPACE" -l app.kubernetes.io/name=cv -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
-          
-          if [ -n "$POD_NAME" ]; then
-            echo "Found pod: $POD_NAME"
-            echo ""
-            echo "Pod describe (checking for errors):"
-            kubectl describe pod "$POD_NAME" -n "$NAMESPACE" | grep -A 10 -E "(Events:|Status:|Conditions:|ContainerStatus)" || true
-            echo ""
-            echo "Pod logs (if available):"
-            kubectl logs "$POD_NAME" -n "$NAMESPACE" --tail=50 2>&1 || echo "Logs not available yet"
-          else
-            echo "⚠️ No pods found yet"
-          fi
-          
-          echo ""
-          echo "📋 Service status:"
-          kubectl get services -n "$NAMESPACE" || true
-          
-          echo ""
-          echo "📋 Ingress status:"
-          kubectl get ingress -n "$NAMESPACE" || true
-          
-          echo ""
-          echo "📋 Recent events:"
-          kubectl get events -n "$NAMESPACE" --sort-by='.lastTimestamp' | tail -30 || true
-          
-      - name: Post-deployment inspection
-        if: always() && env.KUBE_ACCESS == 'true'
-        run: |
-          echo "🔍 Post-deployment inspection..."
-          echo "==============================="
-          
-          NAMESPACE="cv"
-          
-          echo "📊 Final deployment status:"
-          kubectl get all -n "$NAMESPACE" || true
-          
-          echo ""
-          echo "📋 Pod details:"
-          kubectl describe pods -n "$NAMESPACE" | grep -E "(Name:|Status:|Image:|Events:)" || true
-          
-          echo ""
-          echo "📋 Recent events (last 10):"
-          kubectl get events -n "$NAMESPACE" --sort-by='.lastTimestamp' | tail -10 || true
-          
-          echo ""
-          echo "🏷️ Deployed image version:"
-          kubectl get deployment cv -n "$NAMESPACE" -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null && echo "" || echo "Deployment not found"
-          
-          echo ""
-          echo "📋 Helm release status:"
-          helm status cv -n "$NAMESPACE" || echo "Helm release not found"
           
       - name: Create deployment summary
         if: always()
@@ -403,15 +187,6 @@ jobs:
             echo "- 🌐 **English CV:** [https://cv.boysthings.top/](https://cv.boysthings.top/)" >> $GITHUB_STEP_SUMMARY
             echo "- 🌐 **Russian CV:** [https://cv.boysthings.top/rus](https://cv.boysthings.top/rus)" >> $GITHUB_STEP_SUMMARY
             echo "- 📄 **PDF Files:** [https://cv.boysthings.top/pdf](https://cv.boysthings.top/pdf)" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 📊 Kubernetes Status" >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-            echo "# Check deployment status" >> $GITHUB_STEP_SUMMARY
-            echo "kubectl get pods -n cv" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "# View Helm release" >> $GITHUB_STEP_SUMMARY
-            echo "helm status cv -n cv" >> $GITHUB_STEP_SUMMARY
-            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           else
             echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
             echo "Resume files have been uploaded to the [GitHub Release](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ needs.release.outputs.version }})" >> $GITHUB_STEP_SUMMARY
