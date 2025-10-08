@@ -280,7 +280,7 @@ jobs:
             --create-namespace \
             --set image.tag="$VERSION" \
             --wait \
-            --timeout 5m \
+            --timeout 3m \
             --debug
             
           if [ $? -eq 0 ]; then
@@ -299,7 +299,7 @@ jobs:
           NAMESPACE="cv"
           
           # Wait a moment for resources to be created
-          sleep 5
+          sleep 10
           
           echo "📊 Deployment status:"
           kubectl get deployments -n "$NAMESPACE" -o wide || true
@@ -307,6 +307,22 @@ jobs:
           echo ""
           echo "📋 Pod status:"
           kubectl get pods -n "$NAMESPACE" -o wide || true
+          
+          echo ""
+          echo "🔍 Pod details (to diagnose issues):"
+          POD_NAME=$(kubectl get pods -n "$NAMESPACE" -l app.kubernetes.io/name=cv -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          
+          if [ -n "$POD_NAME" ]; then
+            echo "Found pod: $POD_NAME"
+            echo ""
+            echo "Pod describe (checking for errors):"
+            kubectl describe pod "$POD_NAME" -n "$NAMESPACE" | grep -A 10 -E "(Events:|Status:|Conditions:|ContainerStatus)" || true
+            echo ""
+            echo "Pod logs (if available):"
+            kubectl logs "$POD_NAME" -n "$NAMESPACE" --tail=50 2>&1 || echo "Logs not available yet"
+          else
+            echo "⚠️ No pods found yet"
+          fi
           
           echo ""
           echo "📋 Service status:"
@@ -318,7 +334,7 @@ jobs:
           
           echo ""
           echo "📋 Recent events:"
-          kubectl get events -n "$NAMESPACE" --sort-by='.lastTimestamp' | tail -20 || true
+          kubectl get events -n "$NAMESPACE" --sort-by='.lastTimestamp' | tail -30 || true
           
       - name: Post-deployment inspection
         if: always() && env.KUBE_ACCESS == 'true'
