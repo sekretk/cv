@@ -30,6 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Install Chromium for PDF generation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+          echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
+      
       - name: Extract version from tag
         id: get_version
         run: |
@@ -51,12 +57,24 @@ jobs:
       
       - name: Build PDFs
         run: |
-          npm run build:pdf
-          echo "PDFs built successfully!"
+          echo "Building PDFs..."
+          npm run build:pdf || {
+            echo "❌ PDF build failed!"
+            exit 1
+          }
+          echo "✅ PDFs built successfully!"
           ls -lh pdf/
           echo "Verifying PDF files exist:"
-          test -f pdf/resume.eng.pdf && echo "✓ English PDF exists" || echo "✗ English PDF missing"
-          test -f pdf/resume.rus.pdf && echo "✓ Russian PDF exists" || echo "✗ Russian PDF missing"
+          if [ ! -f pdf/resume.eng.pdf ]; then
+            echo "✗ English PDF missing"
+            exit 1
+          fi
+          echo "✓ English PDF exists ($(du -h pdf/resume.eng.pdf | cut -f1))"
+          if [ ! -f pdf/resume.rus.pdf ]; then
+            echo "✗ Russian PDF missing"
+            exit 1
+          fi
+          echo "✓ Russian PDF exists ($(du -h pdf/resume.rus.pdf | cut -f1))"
       
       - name: Commit updated resume files
         run: |
@@ -113,14 +131,13 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.VERSION }}
             ghcr.io/${{ github.repository }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          # Don't use cache for COPY instructions to ensure fresh PDFs
-          no-cache: false
+          # No cache to ensure fresh PDFs are included
+          no-cache: true
       
   deploy:
     name: Deploy to Kubernetes
