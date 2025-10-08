@@ -1,0 +1,40 @@
+---
+globs: resume/*.json
+description: Guidelines for editing resume JSON data files
+---
+
+# Resume JSON Editing Guidelines
+
+## File Structure
+
+Resume data is stored in the `resume` directory:
+- [resume/eng.json](mdc:resume/eng.json) - English version
+- [resume/rus.json](mdc:resume/rus.json) - Russian version
+
+Each file contains structured JSON data representing the resume content in that language.
+
+## Editing Rules
+
+1. **Maintain Structure Consistency**: Both language files should have the same JSON structure, only content differs
+2. **Valid JSON**: Always ensure valid JSON syntax after edits
+3. **Proper Translation**: Content should be properly translated, not transliterated
+4. **Professional Tone**: Keep all content professional and concise
+
+## Language Standards
+
+### English (eng.json)
+- Use American English conventions
+- Standard date formats (MM/DD/YYYY or Month YYYY)
+- Professional US terminology
+
+### Russian (rus.json)
+- Use proper Russian grammar and formatting
+- Russian date format conventions
+- Appropriate Russian professional terminology
+
+## After Editing
+
+1. Validate JSON syntax
+2. Regenerate HTML/PDF outputs
+3. Test both language versions
+4. Review generated files for formatting

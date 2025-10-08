@@ -1,0 +1,42 @@
+---
+globs: theme/**/*
+description: Theme development and customization guidelines
+---
+
+# Theme Guidelines
+
+## Current State
+
+The project currently uses the **Kendall theme** from `node_modules`:
+- Package: `jsonresume-theme-kendall`
+- Installed via npm and referenced in [package.json](mdc:package.json)
+- Provides the styling and layout for generated HTML resumes
+
+## Theme Directory Status
+
+The `theme/` directory in the project root:
+- **Currently NOT in use**
+- Reserved for future custom theme development
+- Do not modify files here expecting them to affect output
+
+## Future Plans
+
+There are plans to develop a custom theme:
+- Custom theme will be placed in the `theme/` directory
+- Will replace or extend the Kendall theme from node_modules
+- Custom styling and layout specific to project needs
+
+## Making Theme Changes (Current)
+
+Since we're using the Kendall theme from node_modules:
+1. Theme changes require modifying or overriding the npm package
+2. For major customization, consider starting custom theme development
+3. Document any workarounds or overrides clearly
+
+## When Custom Theme is Ready
+
+Once custom theme is developed:
+1. Update build process to use `theme/` directory
+2. Update dependencies to remove or keep Kendall as reference
+3. Test thoroughly with both language versions
+4. Document theme structure and customization options

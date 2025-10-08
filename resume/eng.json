@@ -1,8 +1,8 @@
 {
   "meta": {
     "theme": "kendall",
-    "version": "0.0.1",
-    "touch": "2025-10-07"
+    "version": "1.0.0",
+    "touch": "2025-10-08"
   },
   "basics": {
     "name": "Konstantin Sekret",
@@ -71,7 +71,7 @@
       "endDate": "2021",
       "studyType": "Online",
       "institution": "nestjs.com",
-      "area": "NestJS Official Cource"      
+      "area": "NestJS Official Cource"
     },
     {
       "startDate": "2020",
@@ -111,7 +111,10 @@
       "area": "Mathematician",
       "studyType": "Master",
       "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
-      "courses": ["Economic models", "Software developement"]
+      "courses": [
+        "Economic models",
+        "Software developement"
+      ]
     }
   ],
   "skills": [
@@ -140,7 +143,7 @@
     },
     {
       "keywords": [
-        "Bash/Linux", 
+        "Bash/Linux",
         "Docker Swarm",
         "Kubernetes",
         "Helm",
@@ -152,8 +155,8 @@
     },
     {
       "keywords": [
-        "Zoom", 
-        "Slack", 
+        "Zoom",
+        "Slack",
         "BitBucket",
         "Azure",
         "Prometheus",
@@ -167,7 +170,16 @@
     {
       "name": "Devexperts",
       "highlights": [
-        "React", "Styled Components", "fp-ts", "io-ts", "NextJS", "Docker", "NestJS", "Promethius/Graphana", "K6 performance metrics", "Kubernetes"
+        "React",
+        "Styled Components",
+        "fp-ts",
+        "io-ts",
+        "NextJS",
+        "Docker",
+        "NestJS",
+        "Promethius/Graphana",
+        "K6 performance metrics",
+        "Kubernetes"
       ],
       "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows.",
       "website": "https://devexperts.com/",
@@ -178,7 +190,17 @@
       "name": "Finastra",
       "description": "Trading Platform",
       "highlights": [
-        "Angular", "protobuf", "StensilJS", "RxJx", "NestJS", "VueJS", "Vuex", "Vuetify", ".Net Core", "MS SQL Server", "linq2db"
+        "Angular",
+        "protobuf",
+        "StensilJS",
+        "RxJx",
+        "NestJS",
+        "VueJS",
+        "Vuex",
+        "Vuetify",
+        ".Net Core",
+        "MS SQL Server",
+        "linq2db"
       ],
       "summary": "Develop full trading platform UI, supporting processes flow, building contract-first frontend-backend communication",
       "website": "https://www.finastra.com/",
@@ -190,7 +212,16 @@
       "name": "Olfa Soft",
       "description": "Forex Trading platform development",
       "highlights": [
-        "Silverlight", "MVVM", "HLSL", "Expression Blend", "Knockout js", "ASP.MVC", "sql2db", "dapper.net", "BLToolkit", "WPF" 
+        "Silverlight",
+        "MVVM",
+        "HLSL",
+        "Expression Blend",
+        "Knockout js",
+        "ASP.MVC",
+        "sql2db",
+        "dapper.net",
+        "BLToolkit",
+        "WPF"
       ],
       "summary": "Main UI implementation on Silverlight, connection between View-Model and view.",
       "website": "https://www.newtonconsultingpartners.com/fintech-companies-database/olfa-soft",
@@ -202,7 +233,23 @@
       "name": "Auriga",
       "description": "Outsource",
       "highlights": [
-        "Knockout js", "CSS", "ASP.MVC", "BLToolkit", "WPF 4.5", "Telerik components", "Calibur Micro Framework", "Win 8 Surface controls", "Silverlight", "Prism 4.1", "jQuery", "WCF", "MS SQL Server", "WPF", "Croc XML Framework", "EntitfyFramework", "Sharepoint"
+        "Knockout js",
+        "CSS",
+        "ASP.MVC",
+        "BLToolkit",
+        "WPF 4.5",
+        "Telerik components",
+        "Calibur Micro Framework",
+        "Win 8 Surface controls",
+        "Silverlight",
+        "Prism 4.1",
+        "jQuery",
+        "WCF",
+        "MS SQL Server",
+        "WPF",
+        "Croc XML Framework",
+        "EntitfyFramework",
+        "Sharepoint"
       ],
       "summary": "Partial involvement in small and short-term projects, mostly on support current codebase.",
       "website": "https://auriga.com/",
@@ -214,7 +261,13 @@
       "name": "Microinvest",
       "description": "Add-on development",
       "summary": "Data Import/Export, Reports, Develop extensions on C# and VBA to existing retail platform, device integrations.",
-      "highlights": ["WPF", "WinForms", "MS SQL Server", "CrystalReports", "ADO.NET"],
+      "highlights": [
+        "WPF",
+        "WinForms",
+        "MS SQL Server",
+        "CrystalReports",
+        "ADO.NET"
+      ],
       "website": "http://www.microinvest.net/",
       "position": "Software Developer",
       "endDate": "2010-04",

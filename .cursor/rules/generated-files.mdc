@@ -1,0 +1,35 @@
+---
+globs: public-eng/**/*,public-rus/**/*,pdf/*.pdf
+description: Guidelines for generated HTML and PDF files
+---
+
+# Generated Files - DO NOT EDIT MANUALLY
+
+## Important Warning
+
+Files in these directories are generated from source data and should **never be edited manually**:
+
+- `public-eng/` - Generated English HTML
+- `public-rus/` - Generated Russian HTML  
+- `pdf/` - Generated PDF files
+
+## Generation Process
+
+1. Content source: [resume/eng.json](mdc:resume/eng.json) and [resume/rus.json](mdc:resume/rus.json)
+2. Theme/template: `theme/` directory
+3. Output: HTML files in `public-*` directories, PDFs in `pdf/`
+
+## Making Changes
+
+To modify these files:
+1. Edit the source JSON files in `resume/` directory
+2. Run the generation script
+3. Test both language versions
+4. Verify visual formatting and layout
+
+## Testing Checklist
+
+- Responsive design works correctly
+- All links and URLs are valid
+- PDF generation produces expected output
+- Both language versions render properly

@@ -1,0 +1,28 @@
+---
+globs: *.js,*.mjs
+description: JavaScript and Node.js coding standards
+---
+
+# JavaScript/Node.js Standards
+
+## Code Style
+
+- Use modern ES6+ syntax
+- Meaningful variable and function names
+- Add comments for complex logic
+- Use async/await for asynchronous operations
+- Handle errors appropriately
+
+## Dependencies
+
+Managed in [package.json](mdc:package.json):
+- Keep dependencies minimal and necessary
+- Update regularly for security
+- Document purpose of new dependencies
+- Run `npm install` after changes
+
+## Project-Specific
+
+- Generation scripts use Node.js
+- Follow existing code patterns in the project
+- Currently using Kendall theme from node_modules (not custom theme)

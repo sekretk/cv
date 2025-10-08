@@ -1,0 +1,35 @@
+---
+globs: Dockerfile,helm/**/*.yaml,helm/**/*.tpl,helm/**/*.yml
+description: Docker and Kubernetes deployment configuration guidelines
+---
+
+# Deployment Configuration
+
+## Docker
+
+[Dockerfile](mdc:Dockerfile) defines the container image for the CV application.
+
+**Best Practices:**
+- Keep images minimal and secure
+- Use appropriate base images
+- Verify builds succeed after dependency changes
+
+## Kubernetes & Helm
+
+Helm charts are located in `helm/cv/`:
+- `Chart.yaml` - Chart metadata
+- `values.yaml` - Default configuration values
+- `templates/` - Kubernetes resource templates
+
+**Guidelines:**
+- Follow Kubernetes naming conventions
+- Use appropriate resource limits
+- Document configuration changes
+- Run `helm lint` after changes to validate
+- Follow Kubernetes best practices for services and deployments
+
+## Configuration Management
+
+- Keep sensitive data out of version control
+- Use ConfigMaps and Secrets appropriately
+- Document any environment-specific settings

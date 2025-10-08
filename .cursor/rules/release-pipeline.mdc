@@ -1,0 +1,171 @@
+---
+globs: scripts/**/*.js,package.json,.github/workflows/*.yml
+description: Release pipeline and version management guidelines
+---
+
+# Release Pipeline
+
+## GitHub Actions Release Process
+
+**Releases are automated via GitHub Actions** - not manual npm scripts!
+
+### How to Create a Release
+
+1. Update version in [package.json](mdc:package.json)
+2. Commit and push changes
+3. Create and push a version tag:
+   ```bash
+   git tag 1.0.0
+   git push origin 1.0.0
+   ```
+4. GitHub Actions automatically:
+   - Updates all resume JSON files with version and date
+   - Builds PDF files for all languages
+   - Commits updated resume files back to main branch
+   - Creates a GitHub Release with PDFs and JSON files attached
+   - Deploys to Kubernetes cluster (if KUBE_CONFIG secret is configured)
+
+### Workflow File
+
+[.github/workflows/release.yml](mdc:.github/workflows/release.yml) - Automated release workflow
+
+**Triggered by**: Pushing tags matching `\d.\d.\d` pattern (e.g., 1.0.0, 2.1.3)
+
+## Version Management
+
+The project includes an automated version management system that updates all resume JSON files with consistent version and date information.
+
+### Version Update Script
+
+[scripts/update-version.js](mdc:scripts/update-version.js) automatically:
+- Iterates over all `*.json` files in the [resume/](mdc:resume) directory
+- Updates `meta.version` field with provided version
+- Updates `meta.touch` field with current date (YYYY-MM-DD format)
+- Supports custom version and date parameters
+
+**Used by**: GitHub Actions workflow during releases
+
+### NPM Scripts (Development Only)
+
+Scripts in [package.json](mdc:package.json) for local development/testing:
+
+- `npm run update:version` - Manual version update (testing only)
+- `npm run build:pdf` - Build PDFs locally
+- `npm run serve:eng:watch` - Live development server (English)
+- `npm run serve:rus:watch` - Live development server (Russian)
+
+### Multi-Language Support
+
+The version update script is designed for scalability:
+- **Automatically discovers** all JSON files in `resume/` directory
+- No hardcoded language list
+- Easy to add new languages without modifying scripts
+
+Current languages:
+- [resume/eng.json](mdc:resume/eng.json) - English
+- [resume/rus.json](mdc:resume/rus.json) - Russian
+
+To add a new language:
+1. Create new JSON file in `resume/` directory (e.g., `spa.json`)
+2. Follow the same structure as existing files
+3. Version updates will automatically include the new file
+
+## Build Workflow
+
+### Development
+```bash
+npm run serve:eng:watch   # Live English version
+npm run serve:rus:watch   # Live Russian version
+npm run build:pdf          # Build PDFs locally
+```
+
+### Release Process (via GitHub Actions)
+
+1. **Update version** in [package.json](mdc:package.json):
+   ```json
+   {
+     "version": "1.2.0"
+   }
+   ```
+
+2. **Commit and push**:
+   ```bash
+   git add package.json
+   git commit -m "chore: bump version to 1.2.0"
+   git push
+   ```
+
+3. **Create and push tag**:
+   ```bash
+   git tag 1.2.0
+   git push origin 1.2.0
+   ```
+
+4. **GitHub Actions handles the rest**:
+   - Extracts version from tag
+   - Runs `scripts/update-version.js` with version and date
+   - Builds all PDFs
+   - Commits updated resume JSON files
+   - Creates GitHub Release with all artifacts
+
+### Local Testing (Optional)
+```bash
+# Test version update manually
+node scripts/update-version.js 1.2.0 2025-10-08
+
+# Build PDFs locally
+npm run build:pdf
+```
+
+## Best Practices
+
+1. **Always use tags for releases** - Don't manually run release scripts
+2. **Update package.json version first** - This is your source of truth
+3. **Use semantic versioning** - 1.0.0, 1.1.0, 2.0.0, etc. (no "v" prefix)
+4. **Test locally before tagging** - Use serve scripts to preview changes
+5. **Resume files are auto-updated** - Don't manually edit version/touch in JSON files
+
+## Integration Points
+
+- GitHub Actions orchestrates entire release process
+- Resume JSON files are automatically updated and committed
+- PDFs are built and attached to GitHub Release
+- Kubernetes deployment is automatic (when KUBE_CONFIG is configured)
+- Helm charts in [helm/cv/](mdc:helm/cv) define deployment configuration
+
+## Kubernetes Deployment
+
+### Setup
+
+Add `KUBE_CONFIG` secret to enable automatic deployment:
+
+```bash
+# 1. Encode your kubeconfig
+cat ~/.kube/config | base64
+
+# 2. Add to GitHub repository
+# Go to: Settings → Secrets and variables → Actions → New repository secret
+# Name: KUBE_CONFIG
+# Value: <paste base64 output>
+```
+
+### Deployment Details
+
+- **Namespace:** `cv`
+- **Chart:** [helm/cv/](mdc:helm/cv)
+- **Image tag:** Automatically set to release version
+- **Services:** English (6002), Russian (6003), PDF (6001)
+- **Ingress:** https://cv.boysthings.top (if configured)
+
+### Monitoring
+
+View deployment status:
+```bash
+kubectl get pods -n cv
+helm status cv -n cv
+```
+
+Check live application:
+- English: https://cv.boysthings.top/
+- Russian: https://cv.boysthings.top/rus
+- PDFs: https://cv.boysthings.top/pdf

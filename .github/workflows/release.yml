@@ -1,140 +1,336 @@
-name: Release Pipeline
+name: Release
 
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'  # Triggers on version tags like 0.0.3, 1.2.3, etc.
-  workflow_dispatch:  # Allow manual triggering
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+      - '[0-9]+.[0-9]+.[0-9]+'  # Triggers on version tags like 1.0.0, 2.1.3, etc.
 
 jobs:
-  build-and-push:
+  release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+    outputs:
+      version: ${{ steps.get_version.outputs.VERSION }}
+      release-date: ${{ steps.get_date.outputs.DATE }}
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-
+      
       - name: Install dependencies
         run: npm ci
-
-      - name: Generate PDFs
+      
+      - name: Extract version from tag
+        id: get_version
         run: |
-          echo "Generating PDFs into pdf directory..."
-          npm run build:pdf
-          echo "PDFs generated successfully"
-          ls -la pdf/
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=tag
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Generate release notes
-        id: release-notes
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION"
+      
+      - name: Get release date
+        id: get_date
         run: |
-          echo "## 🚀 Release ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📦 Docker Image" >> $GITHUB_STEP_SUMMARY
-          echo "- **Registry**: \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Tags**: \`${{ steps.meta.outputs.tags }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🏃‍♂️ Quick Start" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "docker run -p 6001:6001 -p 6002:6002 -p 6003:6003 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🌍 Multi-Language Support" >> $GITHUB_STEP_SUMMARY
-          echo "- **PDF Server**: http://localhost:6001" >> $GITHUB_STEP_SUMMARY
-          echo "  - English PDF: http://localhost:6001/resume.eng.pdf" >> $GITHUB_STEP_SUMMARY
-          echo "  - Russian PDF: http://localhost:6001/resume.rus.pdf" >> $GITHUB_STEP_SUMMARY
-          echo "- **English CV**: http://localhost:6002" >> $GITHUB_STEP_SUMMARY
-          echo "- **Russian CV**: http://localhost:6003" >> $GITHUB_STEP_SUMMARY
-
-  create-release:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    permissions:
-      contents: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Create or Update Release
+          RELEASE_DATE=$(date -u +%Y-%m-%d)
+          echo "DATE=$RELEASE_DATE" >> $GITHUB_OUTPUT
+          echo "Release date: $RELEASE_DATE"
+      
+      - name: Update resume files with version and date
+        run: |
+          node scripts/update-version.js ${{ steps.get_version.outputs.VERSION }} ${{ steps.get_date.outputs.DATE }}
+          echo "Updated resume files with version ${{ steps.get_version.outputs.VERSION }} and date ${{ steps.get_date.outputs.DATE }}"
+      
+      - name: Build PDFs
+        run: npm run build:pdf
+      
+      - name: Commit updated resume files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add resume/*.json
+          git diff --staged --quiet || git commit -m "chore: update resume versions to ${{ steps.get_version.outputs.VERSION }}"
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+      
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          files: |
+            pdf/resume.eng.pdf
+            pdf/resume.rus.pdf
+            resume/*.json
           body: |
-            ## 🚀 Release ${{ github.ref_name }}
+            Release ${{ steps.get_version.outputs.VERSION }}
             
-            ### 📦 Docker Image
-            - **Registry**: `ghcr.io/${{ github.repository }}`
-            - **Tags**: `${{ github.ref_name }}`, `latest`
+            ## Resume Files
+            - 📄 English PDF: `resume.eng.pdf`
+            - 📄 Russian PDF: `resume.rus.pdf`
+            - 📋 English JSON: `eng.json`
+            - 📋 Russian JSON: `rus.json`
             
-            ### 🏃‍♂️ Quick Start
-            ```bash
-            docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            docker run -p 6001:6001 -p 6002:6002 -p 6003:6003 ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            ```
-            
-            ### 🌍 Production URLs (cv.boysthings.top)
-            - **English CV**: https://cv.boysthings.top/eng
-            - **Russian CV**: https://cv.boysthings.top/rus
-            - **PDF Server**: https://cv.boysthings.top/pdf
-              - English PDF: https://cv.boysthings.top/pdf/resume.eng.pdf
-              - Russian PDF: https://cv.boysthings.top/pdf/resume.rus.pdf
-            
-            ### 🐳 Local Access
-            - **PDF Server**: http://localhost:6001
-            - **English CV**: http://localhost:6002
-            - **Russian CV**: http://localhost:6003
-            
-            ### 🔧 What's Changed
-            - Automated Docker build and push to GitHub Container Registry
-            - Multi-architecture support (linux/amd64, linux/arm64)
-            - Pre-generated PDFs for both languages
-            - Dual-language CV serving
-            - Optimized for production deployment
+            All resume files have been updated with version ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: release
+    if: success() && needs.release.result == 'success'
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install kubectl
+        run: |
+          echo "⚙️ Installing kubectl..."
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+          echo "✅ kubectl installed successfully!"
+          kubectl version --client
+          
+      - name: Install Helm
+        run: |
+          echo "⚙️ Installing Helm..."
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          echo "✅ Helm installed successfully!"
+          helm version
+          
+      - name: Setup Kubernetes cluster access
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          if [ -n "$KUBE_CONFIG" ]; then
+            echo "🔧 Setting up Kubernetes cluster access..."
+            mkdir -p ~/.kube
+            echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+            chmod 600 ~/.kube/config
+            
+            # Test cluster connectivity
+            if kubectl cluster-info > /dev/null 2>&1; then
+              echo "✅ Successfully connected to Kubernetes cluster"
+              echo "KUBE_ACCESS=true" >> $GITHUB_ENV
+            else
+              echo "❌ Failed to connect to Kubernetes cluster"
+              echo "KUBE_ACCESS=false" >> $GITHUB_ENV
+            fi
+          else
+            echo "⚠️ KUBE_CONFIG secret not configured - skipping cluster setup"
+            echo "KUBE_ACCESS=false" >> $GITHUB_ENV
+          fi
+          
+      - name: Pre-deployment cluster inspection
+        if: env.KUBE_ACCESS == 'true'
+        run: |
+          echo "🔍 Pre-deployment cluster inspection..."
+          echo "======================================"
+          
+          NAMESPACE="cv"
+          
+          echo "📊 Cluster nodes:"
+          kubectl get nodes -o wide || true
+          
+          echo ""
+          echo "📁 Available namespaces:"
+          kubectl get namespaces || true
+          
+          if kubectl get namespace "$NAMESPACE" >/dev/null 2>&1; then
+            echo ""
+            echo "✅ Namespace '$NAMESPACE' exists"
+            
+            echo ""
+            echo "📋 Current pods in '$NAMESPACE':"
+            kubectl get pods -n "$NAMESPACE" -o wide || true
+            
+            echo ""
+            echo "📋 Current services in '$NAMESPACE':"
+            kubectl get services -n "$NAMESPACE" || true
+            
+            echo ""
+            echo "📋 Current deployments in '$NAMESPACE':"
+            kubectl get deployments -n "$NAMESPACE" -o wide || true
+            
+            echo ""
+            echo "📋 Current Helm releases in '$NAMESPACE':"
+            helm list -n "$NAMESPACE" || true
+          else
+            echo "⚠️ Namespace '$NAMESPACE' does not exist - will be created by Helm"
+          fi
+          
+      - name: Deploy to Kubernetes with Helm
+        if: env.KUBE_ACCESS == 'true'
+        run: |
+          echo "🚀 Deploying CV to Kubernetes..."
+          echo "================================"
+          
+          NAMESPACE="cv"
+          VERSION="${{ needs.release.outputs.version }}"
+          
+          echo "📋 Deployment Configuration:"
+          echo "Namespace: $NAMESPACE"
+          echo "Version: $VERSION"
+          echo "Chart Path: ./helm/cv"
+          echo ""
+          
+          # Validate chart
+          echo "Step 1: Validating Helm chart..."
+          helm lint ./helm/cv || {
+            echo "❌ Helm chart validation failed"
+            exit 1
+          }
+          echo "✅ Helm chart validation passed"
+          echo ""
+          
+          # Template generation (to verify configuration)
+          echo "Step 2: Generating Helm templates..."
+          helm template cv ./helm/cv \
+            --namespace "$NAMESPACE" \
+            --set image.tag="$VERSION" \
+            --debug > /tmp/cv-manifest.yaml
+          echo "✅ Helm templates generated successfully"
+          
+          echo "Generated manifest preview (first 50 lines):"
+          head -50 /tmp/cv-manifest.yaml
+          echo "... (truncated)"
+          echo ""
+          
+          # Actual deployment
+          echo "Step 3: Executing Helm deployment..."
+          helm upgrade --install cv ./helm/cv \
+            --namespace "$NAMESPACE" \
+            --create-namespace \
+            --set image.tag="$VERSION" \
+            --wait \
+            --timeout 5m \
+            --debug
+            
+          if [ $? -eq 0 ]; then
+            echo "✅ Helm deployment completed successfully"
+          else
+            echo "❌ Helm deployment failed"
+            exit 1
+          fi
+          
+      - name: Monitor deployment progress
+        if: env.KUBE_ACCESS == 'true'
+        run: |
+          echo "⏳ Monitoring deployment progress..."
+          echo "==================================="
+          
+          NAMESPACE="cv"
+          
+          # Wait a moment for resources to be created
+          sleep 5
+          
+          echo "📊 Deployment status:"
+          kubectl get deployments -n "$NAMESPACE" -o wide || true
+          
+          echo ""
+          echo "📋 Pod status:"
+          kubectl get pods -n "$NAMESPACE" -o wide || true
+          
+          echo ""
+          echo "📋 Service status:"
+          kubectl get services -n "$NAMESPACE" || true
+          
+          echo ""
+          echo "📋 Ingress status:"
+          kubectl get ingress -n "$NAMESPACE" || true
+          
+          echo ""
+          echo "📋 Recent events:"
+          kubectl get events -n "$NAMESPACE" --sort-by='.lastTimestamp' | tail -20 || true
+          
+      - name: Post-deployment inspection
+        if: always() && env.KUBE_ACCESS == 'true'
+        run: |
+          echo "🔍 Post-deployment inspection..."
+          echo "==============================="
+          
+          NAMESPACE="cv"
+          
+          echo "📊 Final deployment status:"
+          kubectl get all -n "$NAMESPACE" || true
+          
+          echo ""
+          echo "📋 Pod details:"
+          kubectl describe pods -n "$NAMESPACE" | grep -E "(Name:|Status:|Image:|Events:)" || true
+          
+          echo ""
+          echo "📋 Recent events (last 10):"
+          kubectl get events -n "$NAMESPACE" --sort-by='.lastTimestamp' | tail -10 || true
+          
+          echo ""
+          echo "🏷️ Deployed image version:"
+          kubectl get deployment cv -n "$NAMESPACE" -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null && echo "" || echo "Deployment not found"
+          
+          echo ""
+          echo "📋 Helm release status:"
+          helm status cv -n "$NAMESPACE" || echo "Helm release not found"
+          
+      - name: Create deployment summary
+        if: always()
+        run: |
+          echo "🎉 **Release ${{ needs.release.outputs.version }} Complete!**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Release Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY  
+          echo "- **Date:** ${{ needs.release.outputs.release-date }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Git SHA:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** production" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Completed Tasks" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Extracted version from tag" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Updated resume JSON files with version and date" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Built PDF files for all languages" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Created GitHub Release with artifacts" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ env.KUBE_ACCESS }}" == "true" ]; then
+            echo "- [x] Deployed to Kubernetes cluster successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- [ ] Kubernetes deployment (cluster access not configured)" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📄 Resume Files" >> $GITHUB_STEP_SUMMARY
+          echo "- 📄 English PDF: \`resume.eng.pdf\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 📄 Russian PDF: \`resume.rus.pdf\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 📋 English JSON: \`eng.json\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 📋 Russian JSON: \`rus.json\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ env.KUBE_ACCESS }}" == "true" ]; then
+            echo "### 🚀 Live Application" >> $GITHUB_STEP_SUMMARY
+            echo "**CV version ${{ needs.release.outputs.version }} is now live!**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- 🌐 **English CV:** [https://cv.boysthings.top/](https://cv.boysthings.top/)" >> $GITHUB_STEP_SUMMARY
+            echo "- 🌐 **Russian CV:** [https://cv.boysthings.top/rus](https://cv.boysthings.top/rus)" >> $GITHUB_STEP_SUMMARY
+            echo "- 📄 **PDF Files:** [https://cv.boysthings.top/pdf](https://cv.boysthings.top/pdf)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### 📊 Kubernetes Status" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+            echo "# Check deployment status" >> $GITHUB_STEP_SUMMARY
+            echo "kubectl get pods -n cv" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "# View Helm release" >> $GITHUB_STEP_SUMMARY
+            echo "helm status cv -n cv" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+            echo "Resume files have been uploaded to the [GitHub Release](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ needs.release.outputs.version }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Note:** Kubernetes deployment was skipped (KUBE_CONFIG secret not configured)" >> $GITHUB_STEP_SUMMARY
+          fi

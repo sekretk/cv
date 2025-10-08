@@ -1,0 +1,182 @@
+---
+globs: .github/workflows/*.yml,.github/workflows/*.yaml
+description: GitHub Actions workflows and CI/CD pipeline
+---
+
+# GitHub Actions Workflows
+
+## Release Workflow
+
+**File**: [.github/workflows/release.yml](mdc:.github/workflows/release.yml)
+
+### Trigger
+
+Automatically runs when you push a version tag:
+
+```bash
+git tag 1.0.0
+git push origin 1.0.0
+```
+
+**Tag pattern**: `\d.\d.\d` (e.g., 1.0.0, 2.1.3)
+
+### What It Does
+
+**Job 1: Release**
+1. **Extracts version** from tag (1.0.0)
+2. **Updates all resume files** in [resume/](mdc:resume) directory
+   - Sets `meta.version` to extracted version
+   - Sets `meta.touch` to current date (YYYY-MM-DD)
+3. **Builds PDFs** for all languages
+4. **Commits changes** back to main branch
+5. **Creates GitHub Release** with:
+   - All PDF files (resume.eng.pdf, resume.rus.pdf, etc.)
+   - All JSON files (eng.json, rus.json, etc.)
+   - Release notes with version info
+
+**Job 2: Deploy** (runs after successful release)
+1. **Sets up Kubernetes access** (if KUBE_CONFIG secret is configured)
+2. **Validates Helm chart** in [helm/cv/](mdc:helm/cv)
+3. **Deploys to Kubernetes** using Helm
+   - Namespace: `cv`
+   - Updates image tag to release version
+4. **Monitors deployment** progress and health
+5. **Creates deployment summary** with live URLs
+
+### Multi-Language Support
+
+The workflow automatically:
+- Discovers all `*.json` files in `resume/` directory
+- Updates version/date in each file
+- Builds PDFs for each language
+- Includes all files in the release
+
+**No workflow changes needed** when adding new languages!
+
+### Creating a Release
+
+```bash
+# 1. Update version in package.json
+vim package.json  # Change "version": "1.2.0"
+
+# 2. Commit and push
+git add package.json
+git commit -m "chore: bump version to 1.2.0"
+git push
+
+# 3. Create and push tag (triggers the workflow)
+git tag 1.2.0
+git push origin 1.2.0
+
+# 4. Monitor at: https://github.com/sekretk/cv/actions
+```
+
+### Key Features
+
+- **Automatic version sync**: Resume files always match the git tag
+- **Date stamping**: Each release gets current date in YYYY-MM-DD format
+- **Artifact preservation**: PDFs and JSONs are attached to GitHub Release
+- **Clean commits**: Uses GitHub Actions bot for automated commits
+- **Error handling**: Workflow fails if any step fails
+
+### Environment Variables
+
+- `GITHUB_REF` - Contains the tag reference (refs/tags/1.0.0)
+- `GITHUB_TOKEN` - Automatically provided for authentication
+- `GITHUB_OUTPUT` - Used to pass data between steps
+
+### Secrets Required
+
+**Required for full functionality:**
+- `KUBE_CONFIG` - Base64-encoded Kubernetes config for cluster access
+
+**How to add secrets:**
+```bash
+# Encode your kubeconfig
+cat ~/.kube/config | base64
+
+# Add to GitHub: Settings → Secrets → Actions → New repository secret
+# Name: KUBE_CONFIG
+# Value: <paste base64 output>
+```
+
+**Workflow behavior:**
+- If `KUBE_CONFIG` is set: Full deployment to Kubernetes
+- If `KUBE_CONFIG` is not set: Release only (artifacts uploaded to GitHub)
+
+### Permissions Required
+
+- `contents: write` - To push commits and create releases (release job)
+- `contents: read` - For Kubernetes deployment (deploy job)
+- Workflow uses `GITHUB_TOKEN` (automatically provided)
+
+### Troubleshooting
+
+**Workflow not triggering**:
+- Verify tag format: `\d.\d.\d` (e.g., 1.0.0, 2.1.3)
+- Check you pushed the tag: `git push origin 1.0.0`
+- View workflow runs: https://github.com/sekretk/cv/actions
+
+**Build fails**:
+- Check resume JSON syntax is valid
+- Ensure all dependencies are in [package.json](mdc:package.json)
+- Review workflow logs for error details
+
+**Commit/push fails**:
+- Workflow uses GitHub Actions bot account
+- Ensure main branch is not protected or allows bot commits
+
+**Deployment skipped**:
+- Check if `KUBE_CONFIG` secret is configured
+- Verify kubeconfig is base64-encoded correctly
+- Test cluster connectivity locally
+
+**Helm deployment fails**:
+- Check Helm chart syntax: `helm lint ./helm/cv`
+- Verify image tag exists
+- Review deployment logs in Actions tab
+
+## Best Practices
+
+1. **Test locally first**: Use `npm run serve:eng:watch` to preview changes
+2. **Semantic versioning**: Use 1.0.0, 1.1.0, 2.0.0 format (no "v" prefix)
+3. **One tag per version**: Don't re-tag the same version
+4. **Check workflow status**: Monitor Actions tab after pushing tags
+5. **Don't edit release files**: Let the workflow handle version updates
+
+## Deployment Details
+
+### Kubernetes Deployment
+
+The deploy job automatically deploys to your Kubernetes cluster when `KUBE_CONFIG` secret is configured.
+
+**Deployment configuration:**
+- **Namespace:** `cv`
+- **Helm chart:** [helm/cv/](mdc:helm/cv)
+- **Image tag:** Automatically set to release version
+- **Timeout:** 5 minutes
+
+**What gets deployed:**
+- CV application serving English, Russian, and PDF versions
+- Services for each version (English: port 6002, Russian: port 6003, PDF: port 6001)
+- Ingress with TLS (if configured in values.yaml)
+
+**Monitoring:**
+- Pre-deployment inspection of existing resources
+- Real-time monitoring during deployment
+- Post-deployment health checks
+- Detailed summary in GitHub Actions
+
+### Live URLs (after deployment)
+
+- 🌐 **English CV:** https://cv.boysthings.top/
+- 🌐 **Russian CV:** https://cv.boysthings.top/rus
+- 📄 **PDF Files:** https://cv.boysthings.top/pdf
+
+## Future Enhancements
+
+Potential additions:
+- **Test workflow**: Run tests on pull requests
+- **Docker build**: Build custom Docker images on release
+- **Staging environment**: Deploy to staging before production
+- **Rollback mechanism**: Auto-rollback on failed health checks

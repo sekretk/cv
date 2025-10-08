@@ -1,0 +1,30 @@
+---
+alwaysApply: true
+---
+
+# Security & Privacy Guidelines
+
+## Personal Information
+
+- Be mindful of contact information in public repositories
+- Don't expose sensitive personal information unnecessarily
+- Review deployed versions for information disclosure
+
+## Dependencies
+
+- Keep dependencies updated for security patches
+- Review security advisories for used packages
+- Use `npm audit` to check for vulnerabilities
+
+## Deployment Security
+
+- Don't commit secrets or credentials
+- Use Kubernetes Secrets for sensitive data
+- Follow container security best practices
+- Review public access to deployed resumes
+
+## Version Control
+
+- Don't commit sensitive configuration files
+- Review changes before committing
+- Keep `.gitignore` up to date

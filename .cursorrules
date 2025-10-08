@@ -1,0 +1,84 @@
+# Cursor Rules for CV Project
+
+## Project Overview
+This is a CV/resume project that generates and serves professional resumes in multiple languages (English and Russian). The project uses JSON data files to generate HTML and PDF versions of resumes, with Docker and Helm for deployment.
+
+## File Structure Rules
+
+### Resume Data
+- Resume data is stored in JSON format in `/resume/` directory
+- Maintain separate files for each language: `eng.json` and `rus.json`
+- Keep consistent structure between language versions
+- All changes to resume content should be made in JSON files first
+
+### Generated Files
+- `/public-eng/` and `/public-rus/` contain generated HTML files
+- PDF files are stored in `/pdf/` directory
+- Do not manually edit generated files; regenerate them from JSON sources
+
+### Deployment
+- Kubernetes deployment uses Helm charts in `/helm/cv/`
+- Docker configuration is in `Dockerfile`
+- Follow Kubernetes best practices for service and deployment configurations
+
+## Coding Standards
+
+### JSON Files
+- Use consistent indentation (2 or 4 spaces)
+- Maintain proper JSON schema validation
+- Keep language-specific content properly translated, not just transliterated
+- Validate JSON syntax after any changes
+
+### JavaScript/Node.js
+- Follow modern ES6+ syntax
+- Use meaningful variable and function names
+- Add comments for complex logic
+
+### Docker & Kubernetes
+- Keep Docker images minimal and secure
+- Follow Kubernetes naming conventions
+- Use appropriate resource limits in Helm values
+- Document any configuration changes
+
+## Development Workflow
+
+1. **Updating Resume Content:**
+   - Edit JSON files in `/resume/` directory
+   - Regenerate HTML/PDF outputs
+   - Test both language versions
+   - Verify deployment configurations if needed
+
+2. **Making Changes:**
+   - Always read existing files before making changes
+   - Maintain consistency across language versions
+   - Test changes locally before deployment
+
+3. **Version Control:**
+   - Commit logical, atomic changes
+   - Write clear commit messages
+   - Don't commit node_modules or generated artifacts
+
+## Best Practices
+
+- Preserve existing code style and formatting
+- Keep resume content professional and concise
+- Ensure all URLs and links are valid
+- Maintain responsive design for HTML versions
+- Test PDF generation after content changes
+- Verify Docker builds succeed after dependency changes
+- Check Helm chart validity with `helm lint` after changes
+
+## Language-Specific Notes
+
+- English version (`eng.json`) should use American English conventions
+- Russian version (`rus.json`) should use proper Russian grammar and formatting
+- Keep professional terminology consistent within each language
+- Date formats should follow locale conventions
+
+## Security & Privacy
+
+- Don't expose sensitive personal information unnecessarily
+- Be mindful of contact information in public repositories
+- Review deployed versions for information disclosure
+- Keep dependencies updated for security patches
+
