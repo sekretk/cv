@@ -224,3 +224,58 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "**Note:** Kubernetes deployment was skipped (KUBE_CONFIG secret not configured)" >> $GITHUB_STEP_SUMMARY
           fi
+      
+      - name: Send Telegram Release Notification
+        if: always()
+        env:
+          RELEASE_BOT_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+          RELEASE_CHANNEL: ${{ secrets.RELEASE_CHANNEL }}
+        run: |
+          if [ -n "$RELEASE_BOT_TOKEN" ] && [ -n "$RELEASE_CHANNEL" ]; then
+            echo "📱 Sending Telegram release notification..."
+            
+            # Prepare deployment status message
+            if [ "${{ env.KUBE_ACCESS }}" == "true" ]; then
+              DEPLOY_STATUS="✅ *Automatically deployed to Kubernetes*"
+              APP_LINKS="
+          🌐 *Live Application:*
+          • [English CV](https://cv.boysthings.top/)
+          • [Russian CV](https://cv.boysthings.top/rus)
+          • [PDF Files](https://cv.boysthings.top/pdf)"
+            else
+              DEPLOY_STATUS="📦 *Docker image published* (manual deployment required)"
+              APP_LINKS=""
+            fi
+            
+            # Create release message
+            MESSAGE="📄 *CV Release ${{ needs.release.outputs.version }}* 🚀
+            
+          📅 *Date:* ${{ needs.release.outputs.release-date }}
+          🏷️ *Version:* ${{ needs.release.outputs.version }}
+          📝 *Commit:* [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          
+          ${DEPLOY_STATUS}${APP_LINKS}
+          
+          🐳 *Docker Image:*
+          \`ghcr.io/${{ github.repository }}:${{ needs.release.outputs.version }}\`
+          
+          📋 *Release Details:*
+          [View on GitHub](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})
+          
+          *Release pipeline completed successfully!* ✨"
+            
+            # Send notification
+            curl -s -X POST "https://api.telegram.org/bot${RELEASE_BOT_TOKEN}/sendMessage" \
+              -d chat_id="${RELEASE_CHANNEL}" \
+              -d parse_mode="Markdown" \
+              -d text="$MESSAGE" \
+              -d disable_web_page_preview="true"
+            
+            if [ $? -eq 0 ]; then
+              echo "✅ Telegram notification sent successfully!"
+            else
+              echo "❌ Failed to send Telegram notification"
+            fi
+          else
+            echo "⚠️ Telegram secrets not configured - skipping notification"
+          fi
