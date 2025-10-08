@@ -131,7 +131,6 @@
       "keywords": [
         "NodeJS",
         "NestJS",
-        "Java",
         "C#",
         "PostgreSQL",
         "MongoDB"
@@ -141,10 +140,12 @@
     },
     {
       "keywords": [
-        "Shell", 
-        "K6",
+        "Bash/Linux", 
         "Docker Swarm",
-        "kubernetes"
+        "Kubernetes",
+        "Helm",
+        "TeamCity CICD",
+        "GitLab Actions"
       ],
       "level": "Middle",
       "name": "DevOps"
@@ -166,7 +167,7 @@
     {
       "name": "Devexperts",
       "highlights": [
-        "React", "Styled Components", "fp-ts", "io-ts", "NextJS", "Docker", "NestJS", "Promethius/Graphana", "K6 performance metrics"
+        "React", "Styled Components", "fp-ts", "io-ts", "NextJS", "Docker", "NestJS", "Promethius/Graphana", "K6 performance metrics", "Kubernetes"
       ],
       "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows.",
       "website": "https://devexperts.com/",
