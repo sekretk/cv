@@ -1,4 +1,4 @@
-FROM node:18-alpine3.19
+FROM node:23-alpine3.19
 
 # Set environment variable to skip Puppeteer download (PDFs generated in CI)
 ENV PUPPETEER_SKIP_DOWNLOAD=true
