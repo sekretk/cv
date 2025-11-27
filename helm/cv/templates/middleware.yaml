@@ -1,0 +1,12 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-prefixes
+spec:
+  stripPrefix:
+    prefixes:
+      - {{ .Values.english.urlPath }}
+      - {{ .Values.russian.urlPath }}
+      - {{ .Values.pdf.urlPath }}
+{{- end }}

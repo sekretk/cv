@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.russian.name }}
+  labels:
+    app: {{ .Values.russian.name }}
+spec:
+  type: {{ .Values.russian.service.type }}
+  ports:
+  - port: {{ .Values.russian.service.port }}
+    targetPort: {{ .Values.russian.containerPort }}
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ .Values.russian.name }}
+
