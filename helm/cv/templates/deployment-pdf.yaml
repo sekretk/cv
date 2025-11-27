@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: cv-app
-        image: "{{ .Values.pdf.image.repository }}:{{ .Values.pdf.image.tag }}"
-        imagePullPolicy: {{ .Values.pdf.image.pullPolicy }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["npm", "run", "serve:pdf"]
         ports:
         - containerPort: {{ .Values.pdf.containerPort }}

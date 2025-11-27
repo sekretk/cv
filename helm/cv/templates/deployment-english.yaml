@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: cv-app
-        image: "{{ .Values.english.image.repository }}:{{ .Values.english.image.tag }}"
-        imagePullPolicy: {{ .Values.english.image.pullPolicy }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["npm", "run", "serve:eng"]
         ports:
         - containerPort: {{ .Values.english.containerPort }}
