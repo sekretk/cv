@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.pdf.name }}
+  labels:
+    app: {{ .Values.pdf.name }}
+spec:
+  replicas: {{ .Values.pdf.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.pdf.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.pdf.name }}
+    spec:
+      containers:
+      - name: cv-app
+        image: "{{ .Values.pdf.image.repository }}:{{ .Values.pdf.image.tag }}"
+        imagePullPolicy: {{ .Values.pdf.image.pullPolicy }}
+        command: ["npm", "run", "serve:pdf"]
+        ports:
+        - containerPort: {{ .Values.pdf.containerPort }}
+          name: http
+        resources:
+          {{- toYaml .Values.pdf.resources | nindent 10 }}
+

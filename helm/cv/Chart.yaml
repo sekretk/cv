@@ -1,17 +1,7 @@
 apiVersion: v2
-name: cv
-description: A Helm chart for CV Resume Application
+name: multi-language-cv
+description: A Helm chart for multi-language cv with path-based routing
 type: application
 version: 0.1.0
-appVersion: "1.0.0"
-home: https://github.com/sekretk/cv
-sources:
-  - https://github.com/sekretk/cv
-maintainers:
-  - name: sekretk
-    email: ""
-keywords:
-  - resume
-  - cv
-  - portfolio
-  - docker
+appVersion: "1.0"
+

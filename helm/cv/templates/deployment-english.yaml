@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.english.name }}
+  labels:
+    app: {{ .Values.english.name }}
+spec:
+  replicas: {{ .Values.english.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.english.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.english.name }}
+    spec:
+      containers:
+      - name: cv-app
+        image: "{{ .Values.english.image.repository }}:{{ .Values.english.image.tag }}"
+        imagePullPolicy: {{ .Values.english.image.pullPolicy }}
+        command: ["npm", "run", "serve:eng"]
+        ports:
+        - containerPort: {{ .Values.english.containerPort }}
+          name: http
+        resources:
+          {{- toYaml .Values.english.resources | nindent 10 }}
+
