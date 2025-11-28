@@ -14,13 +14,11 @@ Value: Paste the base64-encoded string from step 1
 Click "Add secret"
 
 
-## List of requirements
-* photo
-* typescript checker
-* pure native API, no framework
-* use SCSS
+## Todo
+* run theme
+* add in result html lang switcher
+* use mustaches for i18n
+* integrate date in result html
+* add pdf link in result html
 * theme switch (light\black)
-* Language switcher (ENG\RU)
-* GitHub repo as the only source of truth with scheduled auto update
 * Mobile version
-* print version
