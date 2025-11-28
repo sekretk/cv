@@ -21,8 +21,13 @@ USER node
 # Install local dependencies
 RUN npm i && npm cache clean --force
 
+# build i18n
+COPY --chown=node:node cv.json cv.json
+COPY --chown=node:node i18n/ ./i18n/
+RUN npm run build:all
+
 # Copy application files
-COPY --chown=node:node resume/ ./resume/
+COPY --chown=node:node out/ ./out/
 COPY --chown=node:node theme/ ./theme/
 # Copy pre-generated PDF directory (generated in CI pipeline)
 COPY --chown=node:node pdf/ ./pdf/

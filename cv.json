@@ -5,7 +5,7 @@
     "touch": "2025-11-27"
   },
   "basics": {
-    "name": "Konstantin Sekret",
+    "name": "{{ name }}",
     "label": "Typescript Developer",
     "image": "https://avatars.githubusercontent.com/u/1430555?v=4",
     "summary": "I am a senior expert with more than 13 years of experience in software development across various roles and areas of responsibility. Over the past 10+ years, I have primarily focused on the fintech sector. Due to the specifics of the projects and companies I have worked with, I have had the opportunity to work on management tools, DevOps tools, and overall infrastructure.",
@@ -30,7 +30,7 @@
       }
     ],
     "location": {
-      "region": "Rostov-on-Don, Russia, (GMT+3)"
+      "region": "Tashkent, UZ (GMT+5)"
     }
   },
   "languages": [
@@ -45,31 +45,26 @@
   ],
   "education": [
     {
-      "startDate": "2007",
-      "endDate": "2012",
-      "area": "Mathematician",
-      "studyType": "Master",
-      "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
-      "courses": [
-        "Economic models",
-        "Software developement"
-      ]
-    },
-    {
-      "startDate": "2019",
-      "endDate": "2019",
-      "studyType": "Online",
-      "institution": "Pirple",
-      "area": "NodeJS foundation",
-      "url": "https://www.pirple.com/"
-    },
-    {
-      "startDate": "2019",
-      "endDate": "2019",
+      "startDate": "2025",
       "studyType": "Online",
       "institution": "Udemy",
-      "area": "VueJS foundation",
-      "url": "https://www.udemy.com/"
+      "area": "GoLang for microservices",
+      "url": "https://https://www.udemy.com//"
+    },
+    {
+      "startDate": "2025",
+      "studyType": "Online",
+      "institution": "PurpleSchool",
+      "area": "Advanced GoLang",
+      "url": "https://app.purpleschool.ru/"
+    },
+    {
+      "startDate": "2024",
+      "endDate": "2025",
+      "studyType": "Online",
+      "institution": "Yandex Practicum",
+      "area": "DevOps For Developers Extended",
+      "url": "https://practicum.yandex.ru/"
     },
     {
       "startDate": "2021",
@@ -95,11 +90,31 @@
       "url": "https://www.linkedin.com/"
     },
     {
-      "startDate": "2024",
+      "startDate": "2019",
+      "endDate": "2019",
       "studyType": "Online",
-      "institution": "Yandex Practicum",
-      "area": "DevOps course",
-      "url": "https://practicum.yandex.ru/"
+      "institution": "Pirple",
+      "area": "NodeJS foundation",
+      "url": "https://www.pirple.com/"
+    },
+    {
+      "startDate": "2019",
+      "endDate": "2019",
+      "studyType": "Online",
+      "institution": "Udemy",
+      "area": "VueJS foundation",
+      "url": "https://www.udemy.com/"
+    },
+    {
+      "startDate": "2007",
+      "endDate": "2012",
+      "area": "Mathematician",
+      "studyType": "Master",
+      "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
+      "courses": [
+        "Economic models",
+        "Software developement"
+      ]
     }
   ],
   "skills": [
@@ -119,21 +134,36 @@
       "keywords": [
         "NodeJS",
         "NestJS",
-        "Java",
-        "C#"
+        "C#",
+        "PostgreSQL",
+        "MongoDB"
       ],
       "level": "Middle",
       "name": "Backend"
     },
     {
       "keywords": [
-        "Shell",
-        "Prometheus / Grafana",
-        "K6",
-        "Docker Swarm"
+        "Bash/Linux",
+        "Docker Swarm",
+        "Kubernetes",
+        "Helm",
+        "TeamCity CICD",
+        "GitLab Actions"
       ],
-      "level": "Junior",
+      "level": "Middle",
       "name": "DevOps"
+    },
+    {
+      "keywords": [
+        "Zoom",
+        "Slack",
+        "BitBucket",
+        "Azure",
+        "Prometheus",
+        "Grafana",
+        "K6"
+      ],
+      "name": "Integrations"
     }
   ],
   "work": [
@@ -148,9 +178,10 @@
         "Docker",
         "NestJS",
         "Promethius/Graphana",
-        "K6 performance metrics"
+        "K6 performance metrics",
+        "Kubernetes"
       ],
-      "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows. ",
+      "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows.",
       "website": "https://devexperts.com/",
       "position": "Frontend Teamlead",
       "startDate": "2021-10"

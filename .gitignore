@@ -5,3 +5,4 @@ node_modules
 resume.**.pdf
 resume.**.html
 pdf/
+out/
