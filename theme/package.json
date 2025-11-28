@@ -1,0 +1,9 @@
+{
+  "name": "jsonresume-theme-custom",
+  "version": "1.0.0",
+  "description": "Custom CV theme using Mustache templates",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT"
+}
+

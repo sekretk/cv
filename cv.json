@@ -1,8 +1,21 @@
 {
   "meta": {
-    "theme": "kendall",
     "version": "0.0.18",
-    "touch": "2025-11-27"
+    "touch": "2025-11-27",
+    "languages": [
+      {
+        "code": "eng",
+        "name": "English",
+        "url": "http://cv.boysthings.top/eng",
+        "pdfUrl": "https://cv.boysthings.top/pdf/resume.eng.pdf"
+      },
+      {
+        "code": "rus",
+        "name": "Русский",
+        "url": "http://cv.boysthings.top/rus",
+        "pdfUrl": "https://cv.boysthings.top/pdf/resume.rus.pdf"
+      }
+    ]
   },
   "basics": {
     "name": "{{ name }}",

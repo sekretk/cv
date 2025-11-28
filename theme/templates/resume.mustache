@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{basics.name}} - {{basics.label}}</title>
+    <style>{{{styles}}}</style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <!-- Top Right Controls -->
+            <div class="header-controls">
+                <!-- Version & Date -->
+                <div class="header-meta">
+                    {{#meta.version}}<span class="meta-version">v{{meta.version}}</span>{{/meta.version}}
+                    {{#meta.touch}}<span class="meta-date">{{meta.touch}}</span>{{/meta.touch}}
+                </div>
+                
+                <!-- Language Switcher -->
+                <div class="header-buttons">
+                    {{#meta.languages}}
+                    <a href="{{url}}" class="icon-button" title="{{name}} version" aria-label="Switch to {{name}}">
+                        {{#isEng}}🇬🇧{{/isEng}}{{#isRus}}🇷🇺{{/isRus}}
+                    </a>
+                    {{/meta.languages}}
+                </div>
+                
+                <!-- PDF Downloads -->
+                <div class="header-buttons">
+                    {{#meta.languages}}
+                    <a href="{{pdfUrl}}" class="icon-button pdf-button {{#isEng}}pdf-eng{{/isEng}}{{#isRus}}pdf-rus{{/isRus}}" title="Download {{name}} PDF" target="_blank" download aria-label="Download {{name}} PDF">
+                        PDF
+                    </a>
+                    {{/meta.languages}}
+                </div>
+                
+                <!-- Theme Toggle -->
+                <button class="icon-button theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            
+            <div class="header-content">
+                {{#basics.image}}
+                <img src="{{basics.image}}" alt="{{basics.name}}" class="profile-image">
+                {{/basics.image}}
+                <div class="header-info">
+                    <h1 class="name">{{basics.name}}</h1>
+                    <h2 class="label">{{basics.label}}</h2>
+                    {{#basics.location.region}}
+                    <p class="location">📍 {{basics.location.region}}</p>
+                    {{/basics.location.region}}
+                </div>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="contact-info">
+                {{#basics.email}}
+                <a href="mailto:{{basics.email}}" class="contact-link">✉️ {{basics.email}}</a>
+                {{/basics.email}}
+                {{#basics.website}}
+                <a href="{{basics.website}}" target="_blank" class="contact-link">🌐 Website</a>
+                {{/basics.website}}
+            </div>
+            
+            <!-- Social Profiles -->
+            <div class="social-links">
+                {{#basics.profiles}}
+                <a href="{{url}}" target="_blank" class="social-link" title="{{network}}">
+                    {{#isGithub}}🔗 GitHub{{/isGithub}}
+                    {{#isLinkedin}}💼 LinkedIn{{/isLinkedin}}
+                    {{#isTelegram}}✈️ Telegram{{/isTelegram}}
+                    {{^isGithub}}{{^isLinkedin}}{{^isTelegram}}🔗 {{network}}{{/isTelegram}}{{/isLinkedin}}{{/isGithub}}
+                </a>
+                {{/basics.profiles}}
+            </div>
+        </header>
+
+        <!-- Summary Section -->
+        {{#basics.summary}}
+        <section class="section">
+            <h3 class="section-title">About</h3>
+            <p class="summary">{{basics.summary}}</p>
+        </section>
+        {{/basics.summary}}
+
+        <!-- Two Column Layout -->
+        <div class="two-column-layout">
+            <!-- Main Content Column -->
+            <div class="main-column">
+                <!-- Skills Section -->
+        {{#hasSkills}}
+        <section class="section">
+            <h3 class="section-title">Skills</h3>
+            <div class="skills-grid">
+                {{#skills}}
+                <div class="skill-category">
+                    <h4 class="skill-name">{{name}} {{#level}}<span class="skill-level">({{level}})</span>{{/level}}</h4>
+                    <div class="skill-keywords">
+                        {{#keywords}}
+                        <span class="skill-tag">{{.}}</span>
+                        {{/keywords}}
+                    </div>
+                </div>
+                {{/skills}}
+            </div>
+        </section>
+        {{/hasSkills}}
+
+        <!-- Work Experience Section -->
+        {{#hasWork}}
+        <section class="section">
+            <h3 class="section-title">Work Experience</h3>
+            {{#work}}
+            <div class="work-item">
+                <div class="work-header">
+                    <div>
+                        <h4 class="work-position">{{position}}</h4>
+                        <p class="work-company">
+                            {{#website}}
+                            <a href="{{website}}" target="_blank">{{name}}</a>
+                            {{/website}}
+                            {{^website}}{{name}}{{/website}}
+                        </p>
+                    </div>
+                    <div class="work-dates">
+                        {{startDate}} - {{#endDate}}{{endDate}}{{/endDate}}{{^endDate}}Present{{/endDate}}
+                    </div>
+                </div>
+                {{#summary}}
+                <p class="work-summary">{{summary}}</p>
+                {{/summary}}
+                {{#description}}
+                <p class="work-description">{{description}}</p>
+                {{/description}}
+                <div class="highlights">
+                    {{#highlights}}
+                    <span class="highlight-tag">{{.}}</span>
+                    {{/highlights}}
+                </div>
+            </div>
+            {{/work}}
+        </section>
+        {{/hasWork}}
+            </div>
+            <!-- End Main Content Column -->
+
+            <!-- Sidebar Column -->
+            <div class="sidebar-column">
+                <!-- Languages Section -->
+        {{#hasLanguages}}
+        <section class="section">
+            <h3 class="section-title">Languages</h3>
+            <div class="languages-list">
+                {{#languages}}
+                <div class="language-item">
+                    <span class="language-name">{{language}}</span>
+                    <span class="language-fluency">{{fluency}}</span>
+                </div>
+                {{/languages}}
+            </div>
+        </section>
+        {{/hasLanguages}}
+
+                <!-- Education Section -->
+        {{#hasEducation}}
+        <section class="section">
+            <h3 class="section-title">Education</h3>
+            {{#education}}
+            <div class="education-item">
+                <div class="education-header">
+                    <div>
+                        <h4 class="education-area">{{area}}</h4>
+                        <p class="education-institution">
+                            {{#url}}
+                            <a href="{{url}}" target="_blank">{{institution}}</a>
+                            {{/url}}
+                            {{^url}}{{institution}}{{/url}}
+                        </p>
+                        {{#studyType}}
+                        <p class="education-type">{{studyType}}</p>
+                        {{/studyType}}
+                    </div>
+                    <div class="education-dates">
+                        {{startDate}}{{#endDate}} - {{endDate}}{{/endDate}}
+                    </div>
+                </div>
+                <ul class="education-courses">
+                    {{#courses}}
+                    <li>{{.}}</li>
+                    {{/courses}}
+                </ul>
+            </div>
+            {{/education}}
+        </section>
+        {{/hasEducation}}
+
+        <!-- Interests Section -->
+        {{#hasInterests}}
+        <section class="section">
+            <h3 class="section-title">Interests</h3>
+            <div class="interests-list">
+                {{#interests}}
+                <span class="interest-tag">{{name}}</span>
+                {{/interests}}
+            </div>
+        </section>
+        {{/hasInterests}}
+            </div>
+            <!-- End Sidebar Column -->
+        </div>
+        <!-- End Two Column Layout -->
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Built with ❤️ using custom Mustache theme</p>
+        </footer>
+    </div>
+
+    <!-- Theme Switcher Script -->
+    <script>
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const body = document.body;
+
+            // Check for saved theme preference or default to 'light'
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            // Apply theme on page load
+            if (currentTheme === 'dark') {
+                body.classList.add('dark-theme');
+                updateToggleButton(true);
+            }
+
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-theme');
+                const isDark = body.classList.contains('dark-theme');
+                
+                // Save preference
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                
+                // Update button
+                updateToggleButton(isDark);
+            });
+
+            function updateToggleButton(isDark) {
+                if (isDark) {
+                    themeIcon.textContent = '☀️';
+                    themeToggle.title = 'Switch to light mode';
+                } else {
+                    themeIcon.textContent = '🌙';
+                    themeToggle.title = 'Switch to dark mode';
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
+
