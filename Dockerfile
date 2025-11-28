@@ -22,7 +22,9 @@ USER node
 RUN npm i && npm cache clean --force
 
 # build i18n
-RUN npm build:all
+COPY --chown=node:node cv.json cv.json
+COPY --chown=node:node i18n/ ./i18n/
+RUN npm run build:all
 
 # Copy application files
 COPY --chown=node:node out/ ./out/
