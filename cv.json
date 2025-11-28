@@ -1,8 +1,8 @@
 {
   "meta": {
     "theme": "kendall",
-    "version": "0.0.14",
-    "touch": "2025-10-08"
+    "version": "0.0.18",
+    "touch": "2025-11-27"
   },
   "basics": {
     "name": "{{ name }}",
