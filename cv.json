@@ -21,10 +21,10 @@
     ]
   },
   "basics": {
-    "name": "{{ name }}",
-    "label": "Typescript Developer",
+    "name": "{{{ name }}}",
+    "label": "{{{ label }}}",
     "image": "https://avatars.githubusercontent.com/u/1430555?v=4",
-    "summary": "I am a senior expert with more than 13 years of experience in software development across various roles and areas of responsibility. Over the past 10+ years, I have primarily focused on the fintech sector. Due to the specifics of the projects and companies I have worked with, I have had the opportunity to work on management tools, DevOps tools, and overall infrastructure.",
+    "summary": "{{{ summary }}}",
     "website": "https://cv.boysthings.top",
     "url": "https://github.com/sekretk/cv/issues",
     "email": "sekret.constantine@gmail.com",
@@ -46,7 +46,7 @@
       }
     ],
     "location": {
-      "region": "{{ location }}"
+      "region": "{{{ location }}}"
     }
   },
   "languages": [
