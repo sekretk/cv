@@ -1,0 +1,29 @@
+---
+globs: **/*
+alwaysApply: true
+description: General development workflow guidelines
+---
+
+# Development Workflow
+
+## Testing Changes
+
+**Do NOT automatically run serve or watch commands after making changes.**
+
+After completing changes, **ask the user** if they want to test by running:
+
+```bash
+npm run serve:eng:watch  # For English version
+npm run serve:rus:watch  # For Russian version
+```
+
+Let the user decide when and how to preview their changes.
+
+## Build Commands
+
+The following commands are available but should only be run when the user requests:
+
+- `npm run build:all` - Build both language versions
+- `npm run build:pdf` - Build PDF files
+- `npm run serve:eng:watch` - Live preview English
+- `npm run serve:rus:watch` - Live preview Russian

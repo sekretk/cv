@@ -7,36 +7,47 @@ description: Theme development and customization guidelines
 
 ## Current State
 
-The project currently uses the **Kendall theme** from `node_modules`:
-- Package: `jsonresume-theme-kendall`
-- Installed via npm and referenced in [package.json](mdc:package.json)
-- Provides the styling and layout for generated HTML resumes
+The project uses a **custom Mustache theme** located in the `theme/` directory:
+- `theme/index.js` - Main render function
+- `theme/templates/resume.mustache` - HTML template with Mustache syntax
+- `theme/styles/main.css` - CSS styles
 
-## Theme Directory Status
+## i18n Support
 
-The `theme/` directory in the project root:
-- **Currently NOT in use**
-- Reserved for future custom theme development
-- Do not modify files here expecting them to affect output
+Static text fields are internationalized. To add a new i18n key, update **3 files**:
 
-## Future Plans
+1. `i18n/eng.json` - Add English translation
+2. `i18n/rus.json` - Add Russian translation  
+3. `cv.json` (i18n section) - Add mustache placeholder `{{ key_name }}`
 
-There are plans to develop a custom theme:
-- Custom theme will be placed in the `theme/` directory
-- Will replace or extend the Kendall theme from node_modules
-- Custom styling and layout specific to project needs
+Then use in template with `{{i18n.key_name}}` syntax.
 
-## Making Theme Changes (Current)
+See [resume-json-editing.mdc](mdc:.cursor/rules/resume-json-editing.mdc) for detailed i18n documentation.
 
-Since we're using the Kendall theme from node_modules:
-1. Theme changes require modifying or overriding the npm package
-2. For major customization, consider starting custom theme development
-3. Document any workarounds or overrides clearly
+## Development Workflow
 
-## When Custom Theme is Ready
+**Important: Do NOT automatically run serve commands after making changes.**
 
-Once custom theme is developed:
-1. Update build process to use `theme/` directory
-2. Update dependencies to remove or keep Kendall as reference
-3. Test thoroughly with both language versions
-4. Document theme structure and customization options
+After making changes to theme files, **ask the user** to run the appropriate watch command:
+
+```bash
+npm run serve:eng:watch  # For English version
+npm run serve:rus:watch  # For Russian version
+```
+
+The user will decide when to preview changes.
+
+## Making Theme Changes
+
+1. Edit template in `theme/templates/resume.mustache`
+2. Edit styles in `theme/styles/main.css`
+3. For i18n changes, update both `i18n/*.json` files and `cv.json`
+4. Ask user to run `npm run serve:*:watch` to preview
+
+## Template Syntax
+
+Uses Mustache templating:
+- `{{variable}}` - Output variable value
+- `{{#section}}...{{/section}}` - Conditional/loop section
+- `{{^section}}...{{/section}}` - Inverted section (if falsy)
+- `{{{raw}}}` - Unescaped HTML output

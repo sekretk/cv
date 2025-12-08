@@ -1,4 +1,13 @@
 {
+    "name": "Konstantin Sekret",
     "about": "About",
-    "name": "Konstantin Sekret"
+    "skills": "Skills",
+    "work_experience": "Work Experience",
+    "present": "Present",
+    "languages": "Languages",
+    "education": "Education",
+    "interests": "Interests",
+    "website": "Website",
+    "footer": "Built with ❤️ using custom Mustache theme",
+    "location": "Tashkent, UZ (GMT+5)"
 }

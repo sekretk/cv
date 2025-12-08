@@ -6,3 +6,4 @@ resume.**.pdf
 resume.**.html
 pdf/
 out/
+.DS_Store

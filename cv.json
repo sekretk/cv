@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
   "meta": {
     "version": "0.0.18",
     "touch": "2025-11-27",
@@ -6,12 +7,14 @@
       {
         "code": "eng",
         "name": "English",
+        "flag": "https://flagcdn.com/w40/gb.png",
         "url": "http://cv.boysthings.top/eng",
         "pdfUrl": "https://cv.boysthings.top/pdf/resume.eng.pdf"
       },
       {
         "code": "rus",
         "name": "Русский",
+        "flag": "https://flagcdn.com/w40/ru.png",
         "url": "http://cv.boysthings.top/rus",
         "pdfUrl": "https://cv.boysthings.top/pdf/resume.rus.pdf"
       }
@@ -43,7 +46,7 @@
       }
     ],
     "location": {
-      "region": "Tashkent, UZ (GMT+5)"
+      "region": "{{ location }}"
     }
   },
   "languages": [

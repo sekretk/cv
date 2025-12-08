@@ -22,7 +22,7 @@
                 <div class="header-buttons">
                     {{#meta.languages}}
                     <a href="{{url}}" class="icon-button" title="{{name}} version" aria-label="Switch to {{name}}">
-                        {{#isEng}}🇬🇧{{/isEng}}{{#isRus}}🇷🇺{{/isRus}}
+                        <img src="{{flag}}" alt="{{name}}" class="flag-icon">
                     </a>
                     {{/meta.languages}}
                 </div>
@@ -30,7 +30,7 @@
                 <!-- PDF Downloads -->
                 <div class="header-buttons">
                     {{#meta.languages}}
-                    <a href="{{pdfUrl}}" class="icon-button pdf-button {{#isEng}}pdf-eng{{/isEng}}{{#isRus}}pdf-rus{{/isRus}}" title="Download {{name}} PDF" target="_blank" download aria-label="Download {{name}} PDF">
+                    <a href="{{pdfUrl}}" class="icon-button pdf-button" style="background-image: url('{{flag}}')" title="Download {{name}} PDF" target="_blank" download aria-label="Download {{name}} PDF">
                         PDF
                     </a>
                     {{/meta.languages}}
@@ -61,7 +61,7 @@
                 <a href="mailto:{{basics.email}}" class="contact-link">✉️ {{basics.email}}</a>
                 {{/basics.email}}
                 {{#basics.website}}
-                <a href="{{basics.website}}" target="_blank" class="contact-link">🌐 Website</a>
+                <a href="{{basics.website}}" target="_blank" class="contact-link">🌐 {{i18n.website}}</a>
                 {{/basics.website}}
             </div>
             
@@ -81,7 +81,7 @@
         <!-- Summary Section -->
         {{#basics.summary}}
         <section class="section">
-            <h3 class="section-title">About</h3>
+            <h3 class="section-title">{{i18n.about}}</h3>
             <p class="summary">{{basics.summary}}</p>
         </section>
         {{/basics.summary}}
@@ -93,7 +93,7 @@
                 <!-- Skills Section -->
         {{#hasSkills}}
         <section class="section">
-            <h3 class="section-title">Skills</h3>
+            <h3 class="section-title">{{i18n.skills}}</h3>
             <div class="skills-grid">
                 {{#skills}}
                 <div class="skill-category">
@@ -112,7 +112,7 @@
         <!-- Work Experience Section -->
         {{#hasWork}}
         <section class="section">
-            <h3 class="section-title">Work Experience</h3>
+            <h3 class="section-title">{{i18n.work_experience}}</h3>
             {{#work}}
             <div class="work-item">
                 <div class="work-header">
@@ -126,7 +126,7 @@
                         </p>
                     </div>
                     <div class="work-dates">
-                        {{startDate}} - {{#endDate}}{{endDate}}{{/endDate}}{{^endDate}}Present{{/endDate}}
+                        {{startDate}} - {{#endDate}}{{endDate}}{{/endDate}}{{^endDate}}{{i18n.present}}{{/endDate}}
                     </div>
                 </div>
                 {{#summary}}
@@ -152,7 +152,7 @@
                 <!-- Languages Section -->
         {{#hasLanguages}}
         <section class="section">
-            <h3 class="section-title">Languages</h3>
+            <h3 class="section-title">{{i18n.languages}}</h3>
             <div class="languages-list">
                 {{#languages}}
                 <div class="language-item">
@@ -167,7 +167,7 @@
                 <!-- Education Section -->
         {{#hasEducation}}
         <section class="section">
-            <h3 class="section-title">Education</h3>
+            <h3 class="section-title">{{i18n.education}}</h3>
             {{#education}}
             <div class="education-item">
                 <div class="education-header">
@@ -200,7 +200,7 @@
         <!-- Interests Section -->
         {{#hasInterests}}
         <section class="section">
-            <h3 class="section-title">Interests</h3>
+            <h3 class="section-title">{{i18n.interests}}</h3>
             <div class="interests-list">
                 {{#interests}}
                 <span class="interest-tag">{{name}}</span>
@@ -215,7 +215,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p class="footer-text">Built with ❤️ using custom Mustache theme</p>
+            <p class="footer-text">{{i18n.footer}}</p>
         </footer>
     </div>
 

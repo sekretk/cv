@@ -119,60 +119,41 @@ body {
     box-shadow: 0 2px 4px var(--shadow);
 }
 
-/* PDF Buttons with Flag Colors */
+.flag-icon {
+    width: 20px;
+    height: auto;
+    border-radius: 2px;
+}
+
+/* PDF Buttons with Flag Background */
 .pdf-button {
     width: auto;
     padding: 0 8px;
     font-size: 0.65rem;
     font-weight: 700;
     border: none;
-}
-
-.pdf-eng {
-    background: linear-gradient(to bottom, 
-        #012169 0%, 
-        #012169 50%, 
-        #C8102E 50%, 
-        #C8102E 100%
-    );
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    position: relative;
 }
 
-.pdf-eng:hover {
-    background: linear-gradient(to bottom, 
-        #001a4d 0%, 
-        #001a4d 50%, 
-        #a00d25 50%, 
-        #a00d25 100%
-    );
-    border: none;
+.pdf-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    transition: background 0.2s ease;
 }
 
-.pdf-rus {
-    background: linear-gradient(to bottom, 
-        white 0%, 
-        white 33.33%, 
-        #0039A6 33.33%, 
-        #0039A6 66.66%, 
-        #D52B1E 66.66%, 
-        #D52B1E 100%
-    );
-    color: #000000;
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.9),
-                 0 0 5px rgba(255, 255, 255, 0.7);
-}
-
-.pdf-rus:hover {
-    background: linear-gradient(to bottom, 
-        #f5f5f5 0%, 
-        #f5f5f5 33.33%, 
-        #002d7f 33.33%, 
-        #002d7f 66.66%, 
-        #b32419 66.66%, 
-        #b32419 100%
-    );
-    border: none;
+.pdf-button:hover::before {
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .theme-toggle {
