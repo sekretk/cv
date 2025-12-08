@@ -184,7 +184,8 @@
   ],
   "work": [
     {
-      "name": "Devexperts",
+      "name": "Podium - AI powered trading platform",
+      "description": "{{{ work.podium.description }}}",
       "highlights": [
         "React",
         "Styled Components",
@@ -197,14 +198,93 @@
         "K6 performance metrics",
         "Kubernetes"
       ],
-      "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows.",
+      "summary": "{{{ work.podium.summary }}}",
+      "website": "https://www.podium.com/",
+      "position": "{{{ work.podium.position }}}",
+      "startDate": "2025-10"
+    },
+    {
+      "name": "Freed AI - AI medical scriber",
+      "description": "{{{ work.freed.description }}}",
+      "highlights": [
+        "NestJS",
+        "fp-ts",
+        "zod",
+        "Zoom SDK",
+        "Docker",
+        "Azure"
+      ],
+      "summary": "{{{ work.freed.summary }}}",
+      "website": "https://www.getfreed.ai/",
+      "position": "{{{ work.freed.position }}}",
+      "startDate": "2025-10"
+    },
+    {
+      "name": "Spectra FX - The Marketplace for FX Options",
+      "description": "{{{ work.spectra.description }}}",
+      "highlights": [
+        "React",
+        "Styled Components",
+        "fp-ts",
+        "io-ts",
+        "NextJS",
+        "Docker",
+        "NestJS",
+        "Promethius/Graphana",
+        "K6 performance metrics",
+        "Kubernetes"
+      ],
+      "summary": "{{{ work.spectra.summary }}}",
+      "website": "https://www.spectrafx.com/",
+      "position": "{{{ work.spectra.position }}}",
+      "startDate": "2024-05",
+      "endDate": "2025-10"
+    },
+    {
+      "name": "Spider Rock Advisor",
+      "description": "{{{ work.spiderrock.description }}}",
+      "highlights": [
+        "React",
+        "Styled Components",
+        "fp-ts",
+        "io-ts",
+        "NextJS",
+        "Docker",
+        "NestJS",
+        "Promethius/Graphana",
+        "K6 performance metrics",
+        "Kubernetes"
+      ],
+      "summary": "{{{ work.spiderrock.summary }}}",
+      "website": "https://spiderrock.net/",
+      "position": "{{{ work.spiderrock.position }}}",
+      "startDate": "2022-10",
+      "endDate": "2024-05"
+    },
+    {
+      "name": "Devexperts - Trading Platform Support",
+      "description": "{{{ work.devexperts.description }}}",
+      "highlights": [
+        "React",
+        "Styled Components",
+        "fp-ts",
+        "io-ts",
+        "NextJS",
+        "Docker",
+        "NestJS",
+        "Promethius/Graphana",
+        "K6 performance metrics",
+        "Kubernetes"
+      ],
+      "summary": "{{{ work.devexperts.summary }}}",
       "website": "https://devexperts.com/",
-      "position": "Frontend Teamlead",
-      "startDate": "2021-10"
+      "position": "{{{ work.devexperts.position }}}",
+      "startDate": "2021-10",
+      "endDate": "2022-10"
     },
     {
       "name": "Finastra",
-      "description": "Trading Platform",
+      "description": "{{{ work.finastra.description }}}",
       "highlights": [
         "Angular",
         "protobuf",
@@ -218,15 +298,15 @@
         "MS SQL Server",
         "linq2db"
       ],
-      "summary": "Develop full trading platform UI, supporting processes flow, building contract-first frontend-backend communication",
+      "summary": "{{{ work.finastra.summary }}}",
       "website": "https://www.finastra.com/",
-      "position": "UI Lead Developer",
+      "position": "{{{ work.finastra.position }}}",
       "startDate": "2019-03",
       "endDate": "2021-09"
     },
     {
       "name": "Olfa Soft",
-      "description": "Forex Trading platform development",
+      "description": "{{{ work.olfa.description }}}",
       "highlights": [
         "Silverlight",
         "MVVM",
@@ -239,15 +319,15 @@
         "BLToolkit",
         "WPF"
       ],
-      "summary": "Main UI implementation on Silverlight, connection between View-Model and view.",
+      "summary": "{{{ work.olfa.summary }}}",
       "website": "https://www.newtonconsultingpartners.com/fintech-companies-database/olfa-soft",
-      "position": "Frontend Developer",
+      "position": "{{{ work.olfa.position }}}",
       "startDate": "2013-02",
       "endDate": "2019-03"
     },
     {
       "name": "Auriga",
-      "description": "Outsource",
+      "description": "{{{ work.auriga.description }}}",
       "highlights": [
         "Knockout js",
         "CSS",
@@ -267,16 +347,16 @@
         "EntitfyFramework",
         "Sharepoint"
       ],
-      "summary": "Partial involvement in small and short-term projects, mostly on support current codebase.",
+      "summary": "{{{ work.auriga.summary }}}",
       "website": "https://auriga.com/",
-      "position": "Outstaff Developr",
+      "position": "{{{ work.auriga.position }}}",
       "startDate": "2011-01",
       "endDate": "2013-02"
     },
     {
       "name": "Microinvest",
-      "description": "Add-on development",
-      "summary": "Data Import/Export, Reports, Develop extensions on C# and VBA to existing retail platform, device integrations.",
+      "description": "{{{ work.microinvest.description }}}",
+      "summary": "{{{ work.microinvest.summary }}}",
       "highlights": [
         "WPF",
         "WinForms",
@@ -285,9 +365,9 @@
         "ADO.NET"
       ],
       "website": "http://www.microinvest.net/",
-      "position": "Software Developer",
-      "endDate": "2010-04",
-      "startDate": "2011-01"
+      "position": "{{{ work.microinvest.position }}}",
+      "endDate": "2011-04",
+      "startDate": "2010-04"
     }
   ],
   "interests": [

@@ -1,4 +1,5 @@
 {
+    "langCode": "eng",
     "name": "Konstantin Sekret",
     "label": "TeamLead / FullStack / Typescript Developer",
     "summary": "I am a senior expert with more than 13 years of experience in software development across various roles and areas of responsibility. Over the past 10+ years, I have primarily focused on the fintech sector. Due to the specifics of the projects and companies I have worked with, I have had the opportunity to work on management tools, DevOps tools, and overall infrastructure.",
@@ -11,5 +12,53 @@
     "interests": "Interests",
     "website": "Website",
     "footer": "Built with ❤️ using custom Mustache theme",
-    "location": "Tashkent, UZ (GMT+5)"
+    "location": "Tashkent, UZ (GMT+5)",
+    "pdfUrl": "https://cv.boysthings.top/pdf/resume.eng.pdf",
+    "work": {   
+        "podium": {
+            "position": "Frontend Teamlead",
+            "description": "AI powered trading platform Team Lead",
+            "summary": "..."
+        },
+        "freed": {
+            "position": "Zoom Extension Developer",
+            "description": "AI medical scriber Team Lead",
+            "summary": "..."
+        },
+        "spectra": {
+            "position": "Teamlead",
+            "description": "Wealth Managment Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "spiderrock": {
+            "position": "Teamlead",
+            "description": "Wealth Managment Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "devexperts": {
+            "position": "Frontend Teamlead",
+            "description": "Trading Platform FE Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "finastra": {
+            "position": "UI Lead Developer",
+            "description": "Trading Platform",
+            "summary": "Develop full trading platform UI, supporting processes flow, building contract-first frontend-backend communication"
+        },
+        "olfa": {
+            "position": "Frontend Developer",
+            "description": "Forex Trading platform development",
+            "summary": "Main UI implementation on Silverlight, connection between View-Model and view."
+        },
+        "auriga": {
+            "position": "Outstaff Developer",
+            "description": "Outsource",
+            "summary": "Partial involvement in small and short-term projects, mostly on support current codebase."
+        },
+        "microinvest": {
+            "position": "Software Developer",
+            "description": "Add-on development",
+            "summary": "Data Import/Export, Reports, Develop extensions on C# and VBA to existing retail platform, device integrations."
+        }
+    }
 }

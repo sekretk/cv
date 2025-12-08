@@ -24,6 +24,7 @@ RUN npm i && npm cache clean --force
 # build i18n
 COPY --chown=node:node cv.json cv.json
 COPY --chown=node:node i18n/ ./i18n/
+COPY --chown=node:node scripts/ ./scripts/
 RUN npm run build:all
 
 # Copy application files

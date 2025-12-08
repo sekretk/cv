@@ -19,22 +19,18 @@
                 </div>
                 
                 <!-- Language Switcher -->
-                <div class="header-buttons">
+                <div class="header-buttons lang-switcher" data-current-lang="{{meta.i18n.langCode}}">
                     {{#meta.languages}}
-                    <a href="{{url}}" class="icon-button" title="{{name}} version" aria-label="Switch to {{name}}">
+                    <a href="{{url}}" class="icon-button lang-button" data-lang="{{code}}" title="{{name}} version" aria-label="Switch to {{name}}">
                         <img src="{{flag}}" alt="{{name}}" class="flag-icon">
                     </a>
                     {{/meta.languages}}
                 </div>
                 
-                <!-- PDF Downloads -->
-                <div class="header-buttons">
-                    {{#meta.languages}}
-                    <a href="{{pdfUrl}}" class="icon-button pdf-button" style="background-image: url('{{flag}}')" title="Download {{name}} PDF" target="_blank" download aria-label="Download {{name}} PDF">
-                        PDF
-                    </a>
-                    {{/meta.languages}}
-                </div>
+                <!-- PDF Download -->
+                <a href="{{meta.i18n.pdfUrl}}" class="icon-button pdf-button" title="Download PDF" target="_blank" download aria-label="Download PDF">
+                    📄
+                </a>
                 
                 <!-- Theme Toggle -->
                 <button class="icon-button theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
@@ -123,6 +119,7 @@
                             <a href="{{website}}" target="_blank">{{name}}</a>
                             {{/website}}
                             {{^website}}{{name}}{{/website}}
+                            {{#description}}<span class="work-company-desc">— {{description}}</span>{{/description}}
                         </p>
                     </div>
                     <div class="work-dates">
@@ -132,9 +129,6 @@
                 {{#summary}}
                 <p class="work-summary">{{summary}}</p>
                 {{/summary}}
-                {{#description}}
-                <p class="work-description">{{description}}</p>
-                {{/description}}
                 <div class="highlights">
                     {{#highlights}}
                     <span class="highlight-tag">{{.}}</span>
@@ -219,9 +213,18 @@
         </footer>
     </div>
 
-    <!-- Theme Switcher Script -->
+    <!-- Scripts -->
     <script>
         (function() {
+            // Mark selected language button
+            const langSwitcher = document.querySelector('.lang-switcher');
+            const currentLang = langSwitcher.dataset.currentLang;
+            const selectedButton = langSwitcher.querySelector(`[data-lang="${currentLang}"]`);
+            if (selectedButton) {
+                selectedButton.classList.add('selected');
+            }
+
+            // Theme Switcher
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = themeToggle.querySelector('.theme-icon');
             const body = document.body;

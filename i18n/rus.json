@@ -1,4 +1,5 @@
 {
+    "langCode": "rus",
     "name": "Константин Секрет",
     "label": "Тимлид, FullStack, Typescript разработчик",
     "summary": "Я — опытный специалист с более чем 13-летним стажем в разработке программного обеспечения в различных ролях и зонах ответственности. Более 10 лет я преимущественно работаю в финтех-секторе. Благодаря специфике проектов и компаний, с которыми я сотрудничал, у меня была возможность работать над инструментами управления, DevOps-инструментами и инфраструктурой в целом.",
@@ -11,5 +12,53 @@
     "interests": "Интересы",
     "website": "Веб-сайт",
     "footer": "Создано с ❤️ с использованием Mustache шаблонов",
-    "location": "Ростов-на-Дону, Россия (GMT+3)"
+    "location": "Ростов-на-Дону, Россия (GMT+3)",
+    "pdfUrl": "https://cv.boysthings.top/pdf/resume.rus.pdf",
+    "work": {
+        "podium": {
+            "position": "Teamlead",
+            "description": "AI powered trading platform Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "freed": {
+            "position": "Teamlead",
+            "description": "AI medical scriber Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "spectra": {
+            "position": "Teamlead",
+            "description": "Wealth Managment Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "spiderrock": {
+            "position": "Teamlead",
+            "description": "Wealth Managment Team Lead",
+            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+        },
+        "devexperts": {
+            "position": "Тимлид фронтенд-разработки",
+            "description": "Тимлид фронтенд-команды торговой платформы",
+            "summary": "Руководство кросс-проектной командой и технологиями, работа с legacy-кодом, участие в управлении проектами для улучшения метрик и повышения прозрачности. Разработка и управление процессами релизов и обработки задач."
+        },
+        "finastra": {
+            "position": "Ведущий UI-разработчик",
+            "description": "Торговая платформа",
+            "summary": "Разработка полноценного UI торговой платформы, поддержка процессных потоков, построение contract-first коммуникации между фронтендом и бэкендом."
+        },
+        "olfa": {
+            "position": "Фронтенд-разработчик",
+            "description": "Разработка Forex торговой платформы",
+            "summary": "Основная реализация UI на Silverlight, связь между View-Model и представлением."
+        },
+        "auriga": {
+            "position": "Аутстафф-разработчик",
+            "description": "Аутсорс",
+            "summary": "Частичное участие в небольших и краткосрочных проектах, преимущественно поддержка существующей кодовой базы."
+        },
+        "microinvest": {
+            "position": "Разработчик ПО",
+            "description": "Разработка дополнений",
+            "summary": "Импорт/экспорт данных, отчёты, разработка расширений на C# и VBA для существующей розничной платформы, интеграция устройств."
+        }
+    }
 }
