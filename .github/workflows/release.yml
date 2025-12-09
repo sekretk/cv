@@ -1,35 +1,83 @@
 name: Release
 
 on:
+  # Auto-release on push to main
   push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'  # Triggers on version tags like 1.0.0, 2.1.3, etc.
-  workflow_call:
-    inputs:
-      version:
-        required: true
-        type: string
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - '.cursor/**'
+  # Manual trigger with optional version
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 1.0.0)'
-        required: true
+        description: 'Version to release (leave empty for auto-increment)'
+        required: false
         type: string
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
     outputs:
       version: ${{ steps.get_version.outputs.VERSION }}
+      kube_access: ${{ steps.setup_kube.outputs.KUBE_ACCESS }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
+      - name: Calculate version
+        id: get_version
+        run: |
+          # Use provided version or auto-increment
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+            echo "Using provided version: $VERSION"
+          else
+            # Get the latest version tag
+            LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)
+            
+            if [ -z "$LATEST_TAG" ]; then
+              # No tags yet, start with 0.1.0
+              LATEST_TAG="0.0.0"
+            fi
+            
+            echo "Latest tag: $LATEST_TAG"
+            
+            # Parse version components and increment patch
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$LATEST_TAG"
+            PATCH=$((PATCH + 1))
+            VERSION="${MAJOR}.${MINOR}.${PATCH}"
+            echo "Auto-incremented version: $VERSION"
+          fi
+          
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Release version: $VERSION"
+      
+      - name: Create and push tag
+        run: |
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          
+          # Check if tag already exists
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists, skipping tag creation"
+          else
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            
+            # Create annotated tag
+            git tag -a "$VERSION" -m "Release $VERSION"
+            git push origin "$VERSION"
+            
+            echo "✅ Created and pushed tag: $VERSION"
+          fi
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -45,18 +93,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y chromium-browser
           echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
-      
-      - name: Extract version
-        id: get_version
-        run: |
-          # Get version from: workflow_call input, workflow_dispatch input, or git tag
-          if [ -n "${{ inputs.version }}" ]; then
-            VERSION="${{ inputs.version }}"
-          else
-            VERSION=${GITHUB_REF#refs/tags/}
-          fi
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-          echo "Release version: $VERSION"
       
       - name: Update version in cv.json (not committed)
         run: |
@@ -149,22 +185,11 @@ jobs:
           # No cache to ensure fresh PDFs are included
           no-cache: true
       
-  deploy:
-    name: Deploy to Kubernetes
-    runs-on: ubuntu-latest
-    needs: release
-    if: success() && needs.release.result == 'success'
-    permissions:
-      contents: read
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-          
       - name: Install Helm
         run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-          
+      
       - name: Setup Kubernetes cluster access
+        id: setup_kube
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         run: |
@@ -172,29 +197,31 @@ jobs:
             mkdir -p ~/.kube
             echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
             chmod 600 ~/.kube/config
+            echo "KUBE_ACCESS=true" >> $GITHUB_OUTPUT
             echo "KUBE_ACCESS=true" >> $GITHUB_ENV
           else
+            echo "KUBE_ACCESS=false" >> $GITHUB_OUTPUT
             echo "KUBE_ACCESS=false" >> $GITHUB_ENV
           fi
-          
+      
       - name: Deploy to Kubernetes with Helm
         if: env.KUBE_ACCESS == 'true'
         run: |
           helm upgrade --install cv ./helm/cv \
             --namespace cv \
             --create-namespace \
-            --set image.tag="${{ needs.release.outputs.version }}" \
+            --set image.tag="${{ steps.get_version.outputs.VERSION }}" \
             --wait \
             --timeout 3m \
             --debug
-          
+      
       - name: Create summary
         if: always()
         run: |
-          echo "🎉 **Release ${{ needs.release.outputs.version }} Complete!**" >> $GITHUB_STEP_SUMMARY
+          echo "🎉 **Release ${{ steps.get_version.outputs.VERSION }} Complete!**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📋 Release Details" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version:** ${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY  
+          echo "- **Version:** ${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_STEP_SUMMARY  
           echo "- **Git SHA:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** production" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -216,19 +243,19 @@ jobs:
           echo "- 📋 Russian JSON: \`rus.json\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🐳 Docker Image" >> $GITHUB_STEP_SUMMARY
-          echo "- \`ghcr.io/${{ github.repository }}:${{ needs.release.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.VERSION }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- \`ghcr.io/${{ github.repository }}:latest\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ env.KUBE_ACCESS }}" == "true" ]; then
             echo "### 🚀 Live Application" >> $GITHUB_STEP_SUMMARY
-            echo "**CV version ${{ needs.release.outputs.version }} is now live!**" >> $GITHUB_STEP_SUMMARY
+            echo "**CV version ${{ steps.get_version.outputs.VERSION }} is now live!**" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "- 🌐 **English CV:** [https://cv.boysthings.top/](https://cv.boysthings.top/)" >> $GITHUB_STEP_SUMMARY
             echo "- 🌐 **Russian CV:** [https://cv.boysthings.top/rus](https://cv.boysthings.top/rus)" >> $GITHUB_STEP_SUMMARY
             echo "- 📄 **PDF Files:** [https://cv.boysthings.top/pdf](https://cv.boysthings.top/pdf)" >> $GITHUB_STEP_SUMMARY
           else
             echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
-            echo "Resume files have been uploaded to the [GitHub Release](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ needs.release.outputs.version }})" >> $GITHUB_STEP_SUMMARY
+            echo "Resume files have been uploaded to the [GitHub Release](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.get_version.outputs.VERSION }})" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "**Note:** Kubernetes deployment was skipped (KUBE_CONFIG secret not configured)" >> $GITHUB_STEP_SUMMARY
           fi
@@ -256,18 +283,18 @@ jobs:
             fi
             
             # Create release message
-            MESSAGE="📄 *CV Release ${{ needs.release.outputs.version }}* 🚀
+            MESSAGE="📄 *CV Release ${{ steps.get_version.outputs.VERSION }}* 🚀
             
-          🏷️ *Version:* ${{ needs.release.outputs.version }}
+          🏷️ *Version:* ${{ steps.get_version.outputs.VERSION }}
           📝 *Commit:* [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           
           ${DEPLOY_STATUS}${APP_LINKS}
           
           🐳 *Docker Image:*
-          \`ghcr.io/${{ github.repository }}:${{ needs.release.outputs.version }}\`
+          \`ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.VERSION }}\`
           
           📋 *Release Details:*
-          [View on GitHub](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})
+          [View on GitHub](https://github.com/${{ github.repository }}/releases/tag/${{ steps.get_version.outputs.VERSION }})
           
           *Release pipeline completed successfully!* ✨"
             
