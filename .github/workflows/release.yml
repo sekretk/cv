@@ -4,6 +4,17 @@ on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'  # Triggers on version tags like 1.0.0, 2.1.3, etc.
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
 
 jobs:
   release:
@@ -17,9 +28,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
@@ -33,10 +46,15 @@ jobs:
           sudo apt-get install -y chromium-browser
           echo "PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser" >> $GITHUB_ENV
       
-      - name: Extract version from tag
+      - name: Extract version
         id: get_version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
+          # Get version from: workflow_call input, workflow_dispatch input, or git tag
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/}
+          fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Release version: $VERSION"
       
