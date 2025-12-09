@@ -47,7 +47,7 @@ russian:
 # PDF service (PDF Files)
 pdf:
   name: pdf-service
-  urlPath: /pdf  # URL path prefix for routing
+  urlPath: /static  # URL path prefix for routing
   replicaCount: 1
   containerPort: 6001  # Port the container listens on
   service:

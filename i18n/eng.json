@@ -11,9 +11,9 @@
     "education": "Education",
     "interests": "Interests",
     "website": "Website",
-    "footer": "Built with ❤️ using custom Mustache theme",
+    "footer": "Built with ❤️ using custom Mustache templates",
     "location": "Tashkent, UZ (GMT+5)",
-    "pdfUrl": "https://cv.boysthings.top/pdf/resume.eng.pdf",
+    "pdfUrl": "https://cv.boysthings.top/static/resume.eng.pdf",
     "work": {   
         "podium": {
             "position": "Frontend Teamlead",

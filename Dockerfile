@@ -30,8 +30,10 @@ RUN npm run build:all
 # Copy application files
 COPY --chown=node:node out/ ./out/
 COPY --chown=node:node theme/ ./theme/
-# Copy pre-generated PDF directory (generated in CI pipeline)
-COPY --chown=node:node pdf/ ./pdf/
+# Copy static files directory
+COPY --chown=node:node static/ ./static/
+# Copy pre-generated PDF files to static directory (generated in CI pipeline)
+COPY --chown=node:node pdf/ ./static/
 # Copy startup script
 COPY --chown=node:node start.sh ./start.sh
 RUN chmod +x ./start.sh

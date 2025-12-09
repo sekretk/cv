@@ -1,0 +1,130 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build & Verify
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Validate JSON files
+        run: |
+          echo "🔍 Validating JSON files..."
+          for file in cv.json i18n/*.json; do
+            if [ -f "$file" ]; then
+              echo "Checking $file..."
+              node -e "JSON.parse(require('fs').readFileSync('$file', 'utf8'))" || {
+                echo "❌ Invalid JSON: $file"
+                exit 1
+              }
+              echo "✅ $file is valid"
+            fi
+          done
+      
+      - name: Build resume JSON files
+        run: |
+          echo "📝 Building resume JSON files..."
+          npm run build:all
+          echo "✅ Resume files built successfully!"
+          ls -la out/
+      
+      - name: Verify generated files
+        run: |
+          echo "🔍 Verifying generated files..."
+          for lang in eng rus; do
+            if [ ! -f "out/${lang}.json" ]; then
+              echo "❌ Missing: out/${lang}.json"
+              exit 1
+            fi
+            echo "✅ out/${lang}.json exists"
+          done
+
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build resume files (required for Docker)
+        run: npm run build:all
+      
+      - name: Create placeholder PDFs for Docker build
+        run: |
+          # In CI, we don't build actual PDFs for PR checks (they're built in release)
+          # Create placeholder files so Docker build succeeds
+          mkdir -p pdf
+          echo "Placeholder PDF for CI build check" > pdf/resume.eng.pdf
+          echo "Placeholder PDF for CI build check" > pdf/resume.rus.pdf
+          echo "✅ Created placeholder PDF files"
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: cv:pr-check
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Create build summary
+        if: always()
+        run: |
+          echo "## 🔍 PR Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Checks Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] JSON validation" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Resume build (npm run build:all)" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Docker image build" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** PDF generation is skipped in PR checks (done during release)" >> $GITHUB_STEP_SUMMARY
+
+  helm:
+    name: Helm Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install Helm
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      
+      - name: Lint Helm chart
+        run: |
+          echo "🔍 Linting Helm chart..."
+          helm lint ./helm/cv
+          echo "✅ Helm chart is valid!"
+

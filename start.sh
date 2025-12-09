@@ -1,8 +1,8 @@
 #!/bin/sh
-# Start PDF file server on port 6001
-echo "Starting PDF file server on port 6001..."
-cd /home/node/app && http-server ./pdf -p 6001 &
-PDF_PID=$!
+# Start static file server on port 6001
+echo "Starting static file server on port 6001..."
+cd /home/node/app && http-server ./static -p 6001 &
+STATIC_PID=$!
 
 # Start English resume server on port 6002
 echo "Starting English resume server on port 6002..."
@@ -18,11 +18,11 @@ RUS_PID=$!
 sleep 8
 
 echo "All servers are running:"
-echo "- PDF Files:  http://localhost:6001 (PID: $PDF_PID)"
+echo "- Static Files: http://localhost:6001 (PID: $STATIC_PID)"
 echo "  - English PDF: http://localhost:6001/resume.eng.pdf"
 echo "  - Russian PDF: http://localhost:6001/resume.rus.pdf"
-echo "- English CV: http://localhost:6002 (PID: $ENG_PID)"
-echo "- Russian CV: http://localhost:6003 (PID: $RUS_PID)"
+echo "- English CV:   http://localhost:6002 (PID: $ENG_PID)"
+echo "- Russian CV:   http://localhost:6003 (PID: $RUS_PID)"
 
 # Keep the container running and show logs from all servers
 wait

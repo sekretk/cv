@@ -122,6 +122,11 @@ body {
     border-radius: 2px;
 }
 
+.pdf-icon {
+    width: 20px;
+    height: 20px;
+}
+
 /* Selected Language Button */
 .lang-button.selected {
     border-color: var(--color-primary);

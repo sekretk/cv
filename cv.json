@@ -7,16 +7,16 @@
       {
         "code": "eng",
         "name": "English",
-        "flag": "https://flagcdn.com/w40/gb.png",
+        "flag": "http://cv.boysthings.top/static/eng.png",
         "url": "http://cv.boysthings.top/eng",
-        "pdfUrl": "https://cv.boysthings.top/pdf/resume.eng.pdf"
+        "pdfUrl": "https://cv.boysthings.top/static/resume.eng.pdf"
       },
       {
         "code": "rus",
         "name": "Русский",
-        "flag": "https://flagcdn.com/w40/ru.png",
+        "flag": "http://cv.boysthings.top/static/rus.png",
         "url": "http://cv.boysthings.top/rus",
-        "pdfUrl": "https://cv.boysthings.top/pdf/resume.rus.pdf"
+        "pdfUrl": "https://cv.boysthings.top/static/resume.rus.pdf"
       }
     ]
   },
@@ -25,7 +25,7 @@
     "label": "{{{ label }}}",
     "image": "https://avatars.githubusercontent.com/u/1430555?v=4",
     "summary": "{{{ summary }}}",
-    "website": "https://cv.boysthings.top",
+    "website": "https://boysthings.top",
     "url": "https://github.com/sekretk/cv/issues",
     "email": "sekret.constantine@gmail.com",
     "profiles": [
@@ -188,14 +188,13 @@
       "description": "{{{ work.podium.description }}}",
       "highlights": [
         "React",
+        "typescript",
         "Styled Components",
-        "fp-ts",
-        "io-ts",
-        "NextJS",
-        "Docker",
-        "NestJS",
-        "Promethius/Graphana",
-        "K6 performance metrics",
+        "frp-ts",
+        "zod",
+        "WebSocket",
+        "Async API",
+        "rxjs",
         "Kubernetes"
       ],
       "summary": "{{{ work.podium.summary }}}",
@@ -207,32 +206,32 @@
       "name": "Freed AI - AI medical scriber",
       "description": "{{{ work.freed.description }}}",
       "highlights": [
+        "typescript",
+        "C++",
         "NestJS",
         "fp-ts",
         "zod",
         "Zoom SDK",
         "Docker",
-        "Azure"
+        "Azure"        
       ],
       "summary": "{{{ work.freed.summary }}}",
       "website": "https://www.getfreed.ai/",
       "position": "{{{ work.freed.position }}}",
-      "startDate": "2025-10"
+      "startDate": "2024-09"
     },
     {
       "name": "Spectra FX - The Marketplace for FX Options",
       "description": "{{{ work.spectra.description }}}",
       "highlights": [
         "React",
-        "Styled Components",
+        "typescript",
+        "rxjs",
+        "WebSocket",
         "fp-ts",
         "io-ts",
-        "NextJS",
         "Docker",
-        "NestJS",
-        "Promethius/Graphana",
-        "K6 performance metrics",
-        "Kubernetes"
+        "Promethius/Graphana"
       ],
       "summary": "{{{ work.spectra.summary }}}",
       "website": "https://www.spectrafx.com/",
@@ -245,15 +244,19 @@
       "description": "{{{ work.spiderrock.description }}}",
       "highlights": [
         "React",
+        "typescript",
         "Styled Components",
         "fp-ts",
+        "rxjs",
         "io-ts",
         "NextJS",
         "Docker",
         "NestJS",
         "Promethius/Graphana",
         "K6 performance metrics",
-        "Kubernetes"
+        "Kubernetes",
+        "Docker Swarm",
+        "Keycloak"
       ],
       "summary": "{{{ work.spiderrock.summary }}}",
       "website": "https://spiderrock.net/",
@@ -266,7 +269,6 @@
       "description": "{{{ work.devexperts.description }}}",
       "highlights": [
         "React",
-        "Styled Components",
         "fp-ts",
         "io-ts",
         "NextJS",
