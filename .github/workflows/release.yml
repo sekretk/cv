@@ -13,13 +13,10 @@ jobs:
       packages: write
     outputs:
       version: ${{ steps.get_version.outputs.VERSION }}
-      release-date: ${{ steps.get_date.outputs.DATE }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -43,17 +40,25 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Release version: $VERSION"
       
-      - name: Get release date
-        id: get_date
+      - name: Update version in cv.json (not committed)
         run: |
-          RELEASE_DATE=$(date -u +%Y-%m-%d)
-          echo "DATE=$RELEASE_DATE" >> $GITHUB_OUTPUT
-          echo "Release date: $RELEASE_DATE"
-      
-      - name: Update resume files with version and date
-        run: |
-          node scripts/update-version.js ${{ steps.get_version.outputs.VERSION }} ${{ steps.get_date.outputs.DATE }}
-          echo "Updated resume files with version ${{ steps.get_version.outputs.VERSION }} and date ${{ steps.get_date.outputs.DATE }}"
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          DATE=$(date -u +%Y-%m-%d)
+          echo "📝 Updating cv.json with version: $VERSION, date: $DATE"
+          
+          # Update version and touch fields in cv.json
+          node -e "
+            const fs = require('fs');
+            const cv = JSON.parse(fs.readFileSync('cv.json', 'utf8'));
+            cv.meta.version = '$VERSION';
+            cv.meta.touch = '$DATE';
+            fs.writeFileSync('cv.json', JSON.stringify(cv, null, 2) + '\n');
+            console.log('✅ cv.json updated');
+          "
+          
+          # Rebuild resume files with updated version
+          npm run build:all
+          echo "✅ Resume files rebuilt with version $VERSION"
       
       - name: Build PDFs
         run: |
@@ -76,19 +81,6 @@ jobs:
           fi
           echo "✓ Russian PDF exists ($(du -h pdf/resume.rus.pdf | cut -f1))"
       
-      - name: Commit updated resume files
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add .
-          git diff --staged --quiet || git commit -m "chore: update resume versions to ${{ steps.get_version.outputs.VERSION }}"
-      
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-      
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -104,8 +96,6 @@ jobs:
             - 📄 Russian PDF: `resume.rus.pdf`
             - 📋 English JSON: `eng.json`
             - 📋 Russian JSON: `rus.json`
-            
-            All resume files have been updated with version ${{ steps.get_version.outputs.VERSION }}
           draft: false
           prerelease: false
         env:
@@ -178,20 +168,18 @@ jobs:
             --timeout 3m \
             --debug
           
-      - name: Create deployment summary
+      - name: Create summary
         if: always()
         run: |
           echo "🎉 **Release ${{ needs.release.outputs.version }} Complete!**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📋 Release Details" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** ${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY  
-          echo "- **Date:** ${{ needs.release.outputs.release-date }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Git SHA:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** production" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### ✅ Completed Tasks" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Extracted version from tag" >> $GITHUB_STEP_SUMMARY
-          echo "- [x] Updated resume JSON files with version and date" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Built PDF files for all languages" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Built and pushed Docker image" >> $GITHUB_STEP_SUMMARY
           echo "- [x] Created GitHub Release with artifacts" >> $GITHUB_STEP_SUMMARY
@@ -250,7 +238,6 @@ jobs:
             # Create release message
             MESSAGE="📄 *CV Release ${{ needs.release.outputs.version }}* 🚀
             
-          📅 *Date:* ${{ needs.release.outputs.release-date }}
           🏷️ *Version:* ${{ needs.release.outputs.version }}
           📝 *Commit:* [\`${GITHUB_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           
