@@ -127,7 +127,7 @@ jobs:
       
       - name: Lint Helm chart
         run: |
-          echo "🔍 Linting Helm chart..."
+          echo "🔍 Linting Helm chart ..."
           helm lint ./helm/cv
           echo "✅ Helm chart is valid!"
 
