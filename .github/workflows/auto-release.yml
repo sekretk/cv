@@ -11,18 +11,20 @@ on:
 
 permissions:
   contents: write
+  packages: write
 
 jobs:
-  auto-release:
-    name: Create Release
+  version:
+    name: Calculate Version
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.next_version.outputs.NEW_VERSION }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Get latest tag
         id: get_latest_tag
@@ -62,9 +64,17 @@ jobs:
           
           # Create annotated tag
           git tag -a "$NEW_VERSION" -m "Release $NEW_VERSION"
-          
-          # Push the tag (this will trigger the release workflow)
           git push origin "$NEW_VERSION"
           
           echo "✅ Created and pushed tag: $NEW_VERSION"
+
+  release:
+    name: Release
+    needs: version
+    uses: ./.github/workflows/release.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+    permissions:
+      contents: write
+      packages: write
 
