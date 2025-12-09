@@ -168,7 +168,7 @@ jobs:
             --timeout 3m \
             --debug
           
-      - name: Create deployment summary
+      - name: Create summary
         if: always()
         run: |
           echo "🎉 **Release ${{ needs.release.outputs.version }} Complete!**" >> $GITHUB_STEP_SUMMARY
