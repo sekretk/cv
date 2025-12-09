@@ -5,8 +5,9 @@ on:
     branches: [main]
     paths-ignore:
       - '*.md'
-      - '.github/workflows/*.yml'
       - '.cursor/**'
+  # Manual trigger for releases
+  workflow_dispatch:
 
 permissions:
   contents: write
