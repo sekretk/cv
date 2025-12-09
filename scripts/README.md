@@ -2,67 +2,48 @@
 
 Utility scripts for the CV project.
 
-## update-version.js
+## build-resume.js
 
-Updates version and date information in `cv.json`.
+Builds resume JSON files by applying Mustache templating with i18n data.
 
 ### Usage
 
 ```bash
-node scripts/update-version.js <version> <date>
+node scripts/build-resume.js <lang>
+node scripts/build-resume.js all
 ```
 
 ### Arguments
 
-- `version` - Semantic version (e.g., `1.0.0`)
-- `date` - Release date in YYYY-MM-DD format (e.g., `2025-11-28`)
+- `lang` - Language code (e.g., `eng`, `rus`) or `all` for all languages
 
 ### Examples
 
 ```bash
-# Update to version 1.0.0 with current date
-node scripts/update-version.js 1.0.0 2025-11-28
+# Build English resume
+node scripts/build-resume.js eng
 
-# Update to version 2.1.3
-node scripts/update-version.js 2.1.3 2025-12-01
+# Build Russian resume
+node scripts/build-resume.js rus
+
+# Build all languages
+node scripts/build-resume.js all
 ```
 
 ### What It Does
 
-1. Reads `cv.json`
-2. Updates `meta.version` field
-3. Updates `meta.touch` field
-4. Writes back to `cv.json` with proper formatting
+1. Reads `cv.json` template
+2. Loads i18n data from `i18n/<lang>.json`
+3. Applies Mustache templating
+4. Outputs to `out/<lang>.json`
 
 ### Used By
 
-- GitHub Actions release workflow (`.github/workflows/release.yml`)
-- Automatically runs when you push a version tag
-
-### Error Handling
-
-The script validates:
-- Version format (must be X.Y.Z)
-- Date format (must be YYYY-MM-DD)
-- File existence
-- JSON syntax
-
-Exits with code 1 on any error.
+- `npm run build:all` - Builds all language versions
+- GitHub Actions workflows
+- Docker build process
 
 ## Development
-
-### Testing Locally
-
-```bash
-# Test version update
-node scripts/update-version.js 0.0.99 2025-11-28
-
-# Check the result
-git diff cv.json
-
-# Revert if needed
-git checkout cv.json
-```
 
 ### Adding New Scripts
 
@@ -73,4 +54,3 @@ When adding new scripts:
 4. Document in this README
 5. Add error handling and validation
 6. Use clear console output with emojis (✅ ❌ 📝)
-
