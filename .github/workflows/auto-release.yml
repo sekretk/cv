@@ -6,6 +6,10 @@ on:
     paths-ignore:
       - '*.md'
       - '.cursor/**'
+  # Trigger on PR merge to main
+  pull_request:
+    types: [closed]
+    branches: [main]
   # Manual trigger for releases
   workflow_dispatch:
 
@@ -17,6 +21,8 @@ jobs:
   version:
     name: Calculate Version
     runs-on: ubuntu-latest
+    # Run on: push to main, manual trigger, OR merged PR (not just closed)
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     outputs:
       version: ${{ steps.next_version.outputs.NEW_VERSION }}
     
