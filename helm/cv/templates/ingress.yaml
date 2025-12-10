@@ -20,14 +20,14 @@ spec:
   - host: {{ .Values.domain }}
     http:
       paths:
-      # PDF service - must come first for specific path matching
-      - path: {{ .Values.pdf.urlPath }}
+      # Static service - must come first for specific path matching
+      - path: {{ .Values.static.urlPath }}
         pathType: Prefix
         backend:
           service:
-            name: {{ .Values.pdf.name }}
+            name: {{ .Values.static.name }}
             port:
-              number: {{ .Values.pdf.service.port }}
+              number: {{ .Values.static.service.port }}
       # Russian service
       - path: {{ .Values.russian.urlPath }}
         pathType: Prefix
