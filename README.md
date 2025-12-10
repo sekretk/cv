@@ -81,5 +81,5 @@ Add to GitHub:
 * add jobs description
 * add certificates in education with links (add to static?)
 * review actions, we only check PR and release
-* switch from simver to plain encounter
+* switch from simver to plain integer increment
 * add in doc/rules main cases to support 
