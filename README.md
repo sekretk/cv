@@ -77,6 +77,9 @@ Add to GitHub:
 - Value: Paste the base64-encoded string
 
 ## Todo
+* auto release on changes in main
 * add jobs description
 * add certificates in education with links (add to static?)
+* review actions, we only check PR and release
+* switch from simver to plain encounter
 * add in doc/rules main cases to support 
