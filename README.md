@@ -77,11 +77,6 @@ Add to GitHub:
 - Value: Paste the base64-encoded string
 
 ## Todo
-
-* ✅ Custom theme with Mustache
-* ✅ Use Mustache for i18n
-* ✅ Responsive/Mobile version
-* 🔄 Add language switcher in HTML
-* 🔄 Integrate date in result HTML
-* 🔄 Add PDF link in result HTML
-* 🔄 Theme switch (light/dark)
+* add jobs description
+* add certificates in education with links (add to static?)
+* add in doc/rules main cases to support 
