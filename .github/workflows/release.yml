@@ -1,8 +1,9 @@
 name: Release
 
 on:
-  # Auto-release on push to main
-  push:
+  # Auto-release when PR is merged to main
+  pull_request:
+    types: [closed]
     branches: [main]
   # Manual trigger with optional version
   workflow_dispatch:
@@ -20,6 +21,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    # Only run if PR was merged (not just closed) or manually triggered
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     outputs:
       version: ${{ steps.get_version.outputs.VERSION }}
       kube_access: ${{ steps.setup_kube.outputs.KUBE_ACCESS }}
