@@ -10,7 +10,7 @@
     "build:all:watch": "nodemon --ignore 'out/' --exec node scripts/build-resume.js all",
     "serve:eng": "resume serve --resume ./out/eng.json --port 6002 --theme ./theme --dir ./public-eng",
     "serve:rus": "resume serve --resume ./out/rus.json --port 6003 --theme ./theme --dir ./public-rus",
-    "serve:pdf": "npx http-server ./pdf -p 6001 --cors",
+    "serve:static": "npx http-server ./static -p 6001 --cors",
     "serve:eng:watch": "nodemon --exec npm run serve:eng",
     "serve:rus:watch": "nodemon --exec npm run serve:rus",
     "build:pdf:eng": "mkdir -p pdf && resume export --resume ./out/eng.json --theme ./theme --format pdf pdf/resume.eng.pdf",

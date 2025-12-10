@@ -8,5 +8,5 @@ spec:
     prefixes:
       - {{ .Values.english.urlPath }}
       - {{ .Values.russian.urlPath }}
-      - {{ .Values.pdf.urlPath }}
+      - {{ .Values.static.urlPath }}
 {{- end }}
