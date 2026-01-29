@@ -15,11 +15,6 @@
     "location": "Ростов-на-Дону, Россия (GMT+3)",
     "pdfUrl": "https://cv.boysthings.top/static/resume.rus.pdf",
     "work": {
-        "podium": {
-            "position": "Teamlead",
-            "description": "AI powered trading platform Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
-        },
         "freed": {
             "position": "Teamlead",
             "description": "AI medical scriber Team Lead",

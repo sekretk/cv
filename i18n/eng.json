@@ -15,11 +15,6 @@
     "location": "Tashkent, UZ (GMT+5)",
     "pdfUrl": "https://cv.boysthings.top/static/resume.eng.pdf",
     "work": {   
-        "podium": {
-            "position": "Frontend Teamlead",
-            "description": "AI powered trading platform Team Lead",
-            "summary": "..."
-        },
         "freed": {
             "position": "Zoom Extension Developer",
             "description": "AI medical scriber Team Lead",
