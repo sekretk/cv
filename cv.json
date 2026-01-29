@@ -160,6 +160,8 @@
     {
       "keywords": [
         "Bash/Linux",
+        "Grafana",
+        "K6",
         "Docker Swarm",
         "Kubernetes",
         "Helm",
@@ -171,37 +173,17 @@
     },
     {
       "keywords": [
-        "Zoom",
-        "Slack",
-        "BitBucket",
+        "Zoom API",
+        "Slack API",
+        "BitBucket API",
         "Azure",
         "Prometheus",
-        "Grafana",
-        "K6"
+        "Keyclock API"
       ],
       "name": "Integrations"
     }
   ],
   "work": [
-    {
-      "name": "Podium - AI powered trading platform",
-      "description": "{{{ work.podium.description }}}",
-      "highlights": [
-        "React",
-        "typescript",
-        "Styled Components",
-        "frp-ts",
-        "zod",
-        "WebSocket",
-        "Async API",
-        "rxjs",
-        "Kubernetes"
-      ],
-      "summary": "{{{ work.podium.summary }}}",
-      "website": "https://www.podium.com/",
-      "position": "{{{ work.podium.position }}}",
-      "startDate": "2025-10"
-    },
     {
       "name": "Freed AI - AI medical scriber",
       "description": "{{{ work.freed.description }}}",
@@ -221,7 +203,7 @@
       "startDate": "2024-09"
     },
     {
-      "name": "Spectra FX - The Marketplace for FX Options",
+      "name": "Devexperts - Spectra FX",
       "description": "{{{ work.spectra.description }}}",
       "highlights": [
         "React",
@@ -230,6 +212,7 @@
         "WebSocket",
         "fp-ts",
         "io-ts",
+        "AWS",
         "Docker",
         "Promethius/Graphana"
       ],
@@ -240,7 +223,7 @@
       "endDate": "2025-10"
     },
     {
-      "name": "Spider Rock Advisor",
+      "name": "Devexperts - Spider Rock Advisor",
       "description": "{{{ work.spiderrock.description }}}",
       "highlights": [
         "React",
