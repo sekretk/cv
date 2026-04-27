@@ -71,3 +71,16 @@ ingress:
     enabled: true
     secretName: boysthings-top-wildcard-tls
 
+# cert-manager: automatic Let's Encrypt renewal for the Ingress TLS secret.
+# Prereqs (cluster admin, once per cluster):
+#   1) Install cert-manager — https://cert-manager.io/docs/installation/
+#   2) Create a ClusterIssuer (e.g. letsencrypt-prod) with an ACME HTTP-01
+#      solver for this hostname. Wildcard certs (*.domain) require DNS-01 and
+#      a DNS solver in the ClusterIssuer, not HTTP-01.
+# Then set certManager.enabled: true and clusterIssuerName to match.
+certManager:
+  enabled: false
+  certificateName: cv-tls
+  clusterIssuerName: letsencrypt-prod
+  additionalDnsNames: []
+
