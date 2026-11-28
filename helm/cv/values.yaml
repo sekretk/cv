@@ -8,7 +8,7 @@ domain: cv.boysthings.top
 image:
   repository: ghcr.io/sekretk/cv
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 # English service (English CV)
 english:
@@ -21,10 +21,9 @@ english:
     port: 80  # Service port (external)
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      memory: 160Mi
     requests:
-      cpu: 50m
+      cpu: 10m
       memory: 64Mi
 
 # Russian service (Russian CV)
@@ -38,10 +37,9 @@ russian:
     port: 80  # Service port (external)
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      memory: 160Mi
     requests:
-      cpu: 50m
+      cpu: 10m
       memory: 64Mi
 
 # Static service (Static Files - PDFs, images, etc.)
@@ -55,10 +53,9 @@ static:
     port: 80  # Service port (external)
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      memory: 160Mi
     requests:
-      cpu: 50m
+      cpu: 10m
       memory: 64Mi
 
 # Ingress configuration
@@ -67,7 +64,8 @@ ingress:
   name: cv-ingress
   className: traefik
   annotations: {}
+  # TLS is terminated by Traefik with a wildcard cert; no tls section needed
   tls:
-    enabled: true
-    secretName: boysthings-top-wildcard-tls
+    enabled: false
+    secretName: ""
 
