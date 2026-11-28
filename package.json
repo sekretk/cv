@@ -13,7 +13,7 @@
     "serve:rus": "http-server ./public-rus -p 6003",
     "dev:eng": "resume serve --resume ./out/eng.json --port 6002 --theme ./theme --dir ./public-eng",
     "dev:rus": "resume serve --resume ./out/rus.json --port 6003 --theme ./theme --dir ./public-rus",
-    "serve:static": "npx http-server ./static -p 6001 --cors",
+    "serve:static": "http-server ./static -p 6001 --cors",
     "serve:eng:watch": "nodemon --exec npm run dev:eng",
     "serve:rus:watch": "nodemon --exec npm run dev:rus",
     "build:pdf:eng": "mkdir -p pdf && resume export --resume ./out/eng.json --theme ./theme --format pdf pdf/resume.eng.pdf",

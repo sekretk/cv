@@ -18,7 +18,7 @@ spec:
       - name: cv-app
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["npm", "run", "serve:rus"]
+        command: ["http-server", "./public-rus", "-p", "6003"]
         ports:
         - containerPort: {{ .Values.russian.containerPort }}
           name: http
