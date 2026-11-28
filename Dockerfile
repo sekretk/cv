@@ -30,6 +30,8 @@ RUN npm run build:all
 # Copy application files
 COPY --chown=node:node out/ ./out/
 COPY --chown=node:node theme/ ./theme/
+# Render static HTML (no dev server / browser-sync in production)
+RUN npm run build:html
 # Copy static files directory
 COPY --chown=node:node static/ ./static/
 # Copy pre-generated PDF files to static directory (generated in CI pipeline)
