@@ -2,7 +2,7 @@
     "langCode": "rus",
     "name": "Константин Секрет",
     "label": "Тимлид, Фул Стек, Typescript разработчик",
-    "summary": "Я — опытный специалист с более чем 13-летним стажем в разработке программного обеспечения в различных ролях и зонах ответственности. Более 10 лет я преимущественно работаю в финтех-секторе. Благодаря специфике проектов и компаний, с которыми я сотрудничал, у меня была возможность работать над инструментами управления, DevOps-инструментами и инфраструктурой в целом.",
+    "summary": "Я — опытный специалист с более чем 15-летним стажем в разработке программного обеспечения в различных ролях и зонах ответственности. Более 10 лет я преимущественно работаю в финтех-секторе. Благодаря специфике проектов и компаний, с которыми я сотрудничал, у меня была возможность работать над инструментами управления, DevOps-инструментами и инфраструктурой в целом.",
     "about": "Обо мне",
     "skills": "Навыки",
     "work_experience": "Опыт работы",
@@ -16,19 +16,19 @@
     "pdfUrl": "https://cv.boysthings.top/static/resume.rus.pdf",
     "work": {
         "freed": {
-            "position": "Teamlead",
-            "description": "AI medical scriber Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+            "position": "Тимлид",
+            "description": "Тимлид, AI-ассистент для медицинской документации",
+            "summary": "Руководство кросс-проектной командой и технологиями, работа с legacy-кодом, участие в управлении проектами для настройки метрик и повышения прозрачности. Разработка и управление процессами релизов и обработки задач."
         },
         "spectra": {
-            "position": "Teamlead",
-            "description": "Wealth Managment Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+            "position": "Тимлид",
+            "description": "Тимлид, управление капиталом (Wealth Management)",
+            "summary": "Руководство кросс-проектной командой и технологиями, работа с legacy-кодом, участие в управлении проектами для настройки метрик и повышения прозрачности. Разработка и управление процессами релизов и обработки задач."
         },
         "spiderrock": {
-            "position": "Teamlead",
-            "description": "Wealth Managment Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+            "position": "Тимлид",
+            "description": "Тимлид, управление капиталом (Wealth Management)",
+            "summary": "Руководство кросс-проектной командой и технологиями, работа с legacy-кодом, участие в управлении проектами для настройки метрик и повышения прозрачности. Разработка и управление процессами релизов и обработки задач."
         },
         "devexperts": {
             "position": "Тимлид фронтенд-разработки",

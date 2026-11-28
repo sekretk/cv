@@ -7,15 +7,15 @@
       {
         "code": "eng",
         "name": "English",
-        "flag": "http://cv.boysthings.top/static/eng.png",
-        "url": "http://cv.boysthings.top/eng",
+        "flag": "https://cv.boysthings.top/static/eng.png",
+        "url": "https://cv.boysthings.top/eng",
         "pdfUrl": "https://cv.boysthings.top/static/resume.eng.pdf"
       },
       {
         "code": "rus",
         "name": "Русский",
-        "flag": "http://cv.boysthings.top/static/rus.png",
-        "url": "http://cv.boysthings.top/rus",
+        "flag": "https://cv.boysthings.top/static/rus.png",
+        "url": "https://cv.boysthings.top/rus",
         "pdfUrl": "https://cv.boysthings.top/static/resume.rus.pdf"
       }
     ]
@@ -65,7 +65,7 @@
       "studyType": "Online",
       "institution": "Udemy",
       "area": "GoLang for microservices",
-      "url": "https://https://www.udemy.com//"
+      "url": "https://www.udemy.com/"
     },
     {
       "startDate": "2025",
@@ -87,7 +87,7 @@
       "endDate": "2021",
       "studyType": "Online",
       "institution": "nestjs.com",
-      "area": "NestJS Official Cource"
+      "area": "NestJS Official Course"
     },
     {
       "startDate": "2020",
@@ -129,7 +129,7 @@
       "institution": "South Federal University. Mathematic, Mechanic and Computer Science Department.",
       "courses": [
         "Economic models",
-        "Software developement"
+        "Software development"
       ]
     }
   ],
@@ -178,7 +178,7 @@
         "BitBucket API",
         "Azure",
         "Prometheus",
-        "Keyclock API"
+        "Keycloak API"
       ],
       "name": "Integrations"
     }
@@ -195,7 +195,7 @@
         "zod",
         "Zoom SDK",
         "Docker",
-        "Azure"        
+        "Azure"
       ],
       "summary": "{{{ work.freed.summary }}}",
       "website": "https://www.getfreed.ai/",
@@ -214,7 +214,7 @@
         "io-ts",
         "AWS",
         "Docker",
-        "Promethius/Graphana"
+        "Prometheus/Grafana"
       ],
       "summary": "{{{ work.spectra.summary }}}",
       "website": "https://www.spectrafx.com/",
@@ -235,7 +235,7 @@
         "NextJS",
         "Docker",
         "NestJS",
-        "Promethius/Graphana",
+        "Prometheus/Grafana",
         "K6 performance metrics",
         "Kubernetes",
         "Docker Swarm",
@@ -257,7 +257,7 @@
         "NextJS",
         "Docker",
         "NestJS",
-        "Promethius/Graphana",
+        "Prometheus/Grafana",
         "K6 performance metrics",
         "Kubernetes"
       ],
@@ -273,8 +273,8 @@
       "highlights": [
         "Angular",
         "protobuf",
-        "StensilJS",
-        "RxJx",
+        "StencilJS",
+        "RxJS",
         "NestJS",
         "VueJS",
         "Vuex",
@@ -320,7 +320,7 @@
         "BLToolkit",
         "WPF 4.5",
         "Telerik components",
-        "Calibur Micro Framework",
+        "Caliburn.Micro",
         "Win 8 Surface controls",
         "Silverlight",
         "Prism 4.1",
@@ -329,7 +329,7 @@
         "MS SQL Server",
         "WPF",
         "Croc XML Framework",
-        "EntitfyFramework",
+        "Entity Framework",
         "Sharepoint"
       ],
       "summary": "{{{ work.auriga.summary }}}",
