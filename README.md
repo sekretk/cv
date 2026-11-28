@@ -83,3 +83,7 @@ Add to GitHub:
 * review actions, we only check PR and release
 * switch from simver to plain integer increment
 * add in doc/rules main cases to support 
+
+## Deployment
+
+Every merge to `main` runs the Release workflow, which builds the image, pushes it to GHCR and deploys it with Helm to https://cv.boysthings.top (namespace `cv`). Secrets: `KUBE_CONFIG` (namespace-scoped deployer kubeconfig) and `AUTOMERGE_TOKEN` (fine-grained token, so auto-merges trigger the deploy).
