@@ -2,7 +2,7 @@
     "langCode": "eng",
     "name": "Konstantin Sekret",
     "label": "TeamLead / FullStack / Typescript Developer",
-    "summary": "I am a senior expert with more than 13 years of experience in software development across various roles and areas of responsibility. Over the past 10+ years, I have primarily focused on the fintech sector. Due to the specifics of the projects and companies I have worked with, I have had the opportunity to work on management tools, DevOps tools, and overall infrastructure.",
+    "summary": "I am a senior expert with more than 15 years of experience in software development across various roles and areas of responsibility. Over the past 10+ years, I have primarily focused on the fintech sector. Due to the specifics of the projects and companies I have worked with, I have had the opportunity to work on management tools, DevOps tools, and overall infrastructure.",
     "about": "About",
     "skills": "Skills",
     "work_experience": "Work Experience",
@@ -22,38 +22,38 @@
         },
         "spectra": {
             "position": "Teamlead",
-            "description": "Wealth Managment Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+            "description": "Wealth Management Team Lead",
+            "summary": "Leading a cross-project team and its technology stack, handling legacy code, stepping into project management to set up metrics and improve project transparency. Developing and leading release and ticket-handling flows."
         },
         "spiderrock": {
             "position": "Teamlead",
-            "description": "Wealth Managment Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+            "description": "Wealth Management Team Lead",
+            "summary": "Leading a cross-project team and its technology stack, handling legacy code, stepping into project management to set up metrics and improve project transparency. Developing and leading release and ticket-handling flows."
         },
         "devexperts": {
             "position": "Frontend Teamlead",
             "description": "Trading Platform FE Team Lead",
-            "summary": "Leading cross project team and technology, handling legacy code, steping in project management areas to fill metrics and extend project transparency. Developing and leading releases and ticket handling flows."
+            "summary": "Leading a cross-project team and its technology stack, handling legacy code, stepping into project management to set up metrics and improve project transparency. Developing and leading release and ticket-handling flows."
         },
         "finastra": {
             "position": "UI Lead Developer",
             "description": "Trading Platform",
-            "summary": "Develop full trading platform UI, supporting processes flow, building contract-first frontend-backend communication"
+            "summary": "Developing the full trading platform UI, supporting process flows, building contract-first frontend-backend communication"
         },
         "olfa": {
             "position": "Frontend Developer",
             "description": "Forex Trading platform development",
-            "summary": "Main UI implementation on Silverlight, connection between View-Model and view."
+            "summary": "Main UI implementation on Silverlight, binding between view models and views."
         },
         "auriga": {
             "position": "Outstaff Developer",
             "description": "Outsource",
-            "summary": "Partial involvement in small and short-term projects, mostly on support current codebase."
+            "summary": "Partial involvement in small and short-term projects, mostly supporting the existing codebase."
         },
         "microinvest": {
             "position": "Software Developer",
             "description": "Add-on development",
-            "summary": "Data Import/Export, Reports, Develop extensions on C# and VBA to existing retail platform, device integrations."
+            "summary": "Data Import/Export, Reports, developing C# and VBA extensions for an existing retail platform, device integrations."
         }
     }
 }
