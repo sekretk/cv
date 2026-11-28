@@ -21,7 +21,8 @@ english:
     port: 80  # Service port (external)
   resources:
     limits:
-      memory: 160Mi
+      cpu: 50m
+      memory: 96Mi
     requests:
       cpu: 10m
       memory: 64Mi
@@ -37,7 +38,8 @@ russian:
     port: 80  # Service port (external)
   resources:
     limits:
-      memory: 160Mi
+      cpu: 50m
+      memory: 96Mi
     requests:
       cpu: 10m
       memory: 64Mi
@@ -53,7 +55,8 @@ static:
     port: 80  # Service port (external)
   resources:
     limits:
-      memory: 160Mi
+      cpu: 50m
+      memory: 96Mi
     requests:
       cpu: 10m
       memory: 64Mi
