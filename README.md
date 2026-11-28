@@ -87,3 +87,5 @@ Add to GitHub:
 ## Deployment
 
 Every merge to `main` runs the Release workflow, which builds the image, pushes it to GHCR and deploys it with Helm to https://cv.boysthings.top (namespace `cv`). Secrets: `KUBE_CONFIG` (namespace-scoped deployer kubeconfig) and `AUTOMERGE_TOKEN` (fine-grained token, so auto-merges trigger the deploy).
+
+Local development: `npm run build:all` then `npm run dev:eng` / `npm run dev:rus` for live reload. Production serves static HTML built with `npm run build:html`.
